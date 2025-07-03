@@ -1,0 +1,23 @@
+.h2-p-section {
+    padding: 25px;
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: var(--bg-color1);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--shadow-color1);
+    text-align: center;
+}
+
+.h2-p-section h2 {
+    color: var(--color1);
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2em;
+}
+
+.h2-p-section p {
+    color: var(--color1);
+    font-size: 1.2em;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}

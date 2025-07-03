@@ -1,0 +1,30 @@
+.form-add-card {
+    position: relative;
+    z-index: 1040;
+    width: 100%;
+    max-width: 30rem;
+    background-color: var(--bg-color3);
+    color: var(--color1);
+}
+
+.form-add-label {
+    color: var(--color1);
+}
+
+.form-add-input {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+}
+
+.form-add-input:focus {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+    border-color: var(--color1);
+    box-shadow: 0 0 0 0.25rem rgba(216, 142, 4, 0.25);
+}
+
+.form-add-button {
+    background-color: var(--color1);
+    color: var(--color-texto-btnes);
+    border-color: var(--color-texto-btnes);
+}

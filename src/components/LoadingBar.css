@@ -1,0 +1,32 @@
+@keyframes moveProgress {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(400%);
+    }
+}
+
+.loading-bar-container {
+    width: 80%;
+    height: 8px;
+    background-color: var(--bg-color1);
+    position: relative;
+    overflow: hidden;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.progress-indicator {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 25%;
+    background-image: linear-gradient(
+        to right,
+        rgba(216, 142, 4, 0) 0%,
+        var(--color1) 50%,
+        rgba(216, 142, 4, 0) 100%
+    );
+    animation: moveProgress 1.4s linear infinite;
+}

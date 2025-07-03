@@ -1,0 +1,29 @@
+.selector-cantidad-group {
+    max-width: 120px;
+    margin: auto;
+    flex-wrap: nowrap;
+}
+
+.selector-cantidad-btn {
+    border: none !important;
+    background-color: var(--bg-color4) !important;
+    color: var(--color1) !important;
+    width: 2em;
+    flex-grow: 0 !important;
+}
+
+.selector-cantidad-btn.btn-restar {
+    border-radius: 6px 0 0 6px !important;
+}
+
+.selector-cantidad-btn.btn-sumar {
+    border-radius: 0 6px 6px 0 !important;
+}
+
+.selector-cantidad-input {
+    background-color: transparent !important;
+    color: var(--color1) !important;
+    border: 1px solid var(--bg-color4) !important;
+    width: 3.3rem !important;
+    flex-grow: 0 !important;
+}

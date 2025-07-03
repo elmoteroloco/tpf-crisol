@@ -1,0 +1,38 @@
+#root {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+}
+.app-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.offcanvas {
+    z-index: 2001 !important;
+    background: #222 !important;
+    color: #fff;
+}
+
+.offcanvas-header .btn-close {
+    filter: invert(22%) sepia(99%) saturate(7492%) hue-rotate(357deg) brightness(97%) contrast(119%) !important;
+    opacity: 1 !important;
+}
+
+.offcanvas-header .btn-close:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.offcanvas-header .btn-close:hover {
+    background-color: #7a1818 !important;
+    filter: invert(12%) sepia(99%) saturate(3000%) hue-rotate(357deg) brightness(60%) contrast(119%) !important;
+}

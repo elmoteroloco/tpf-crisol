@@ -1,0 +1,17 @@
+.form-edit-label {
+    color: var(--color1);
+}
+
+.form-edit-card {
+    position: relative;
+    z-index: 1040;
+    width: 100%;
+    max-width: 30rem;
+    background-color: var(--bg-color3);
+    color: var(--color1);
+}
+
+.form-edit-input {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+}
