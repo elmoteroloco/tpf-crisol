@@ -4,6 +4,7 @@ import { Container, Form, Button, Card, Row, Col } from "react-bootstrap"
 import { useAuthContext } from "../../contexts/AuthContext"
 import { CarritoContext } from "../../contexts/CarritoContext"
 import { crearOrdenDeCompra } from "../../firebase/firebase"
+import "./Checkout.css"
 import { dispararSweetBasico } from "../../utils/SweetAlert"
 
 function Checkout() {
@@ -69,51 +70,53 @@ function Checkout() {
     }
 
     return (
-        <Container className="my-5">
-            <Row className="justify-content-center">
-                <Col md={8} lg={6}>
-                    <Card className="p-4 shadow-lg">
-                        <h2 className="text-center mb-4">Tu compra</h2>
-                        <Form onSubmit={handleSubmit}>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Nombre completo</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="nombre"
-                                    value={formData.nombre}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Teléfono</Form.Label>
-                                <Form.Control
-                                    type="tel"
-                                    name="telefono"
-                                    value={formData.telefono}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3">
-                                <Form.Label>Domicilio de envío</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    name="direccion"
-                                    value={formData.direccion}
-                                    onChange={handleChange}
-                                    required
-                                />
-                            </Form.Group>
-                            <div className="d-grid">
-                                <Button variant="primary" type="submit">
-                                    Confirmá tu compra, son $ {total.toFixed(2)}
-                                </Button>
-                            </div>
-                        </Form>
-                    </Card>
-                </Col>
-            </Row>
+        <Container className="d-flex justify-content-center align-items-center min-vh-100 py-5">
+            <Card className="p-4 shadow-lg checkout-card">
+                <h2 className="text-center mb-4">Finalizar Compra</h2>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="checkoutNombre">
+                        <Form.Label className="checkout-label">Nombre completo</Form.Label>
+                        <Form.Control
+                            className="checkout-input"
+                            type="text"
+                            name="nombre"
+                            value={formData.nombre}
+                            onChange={handleChange}
+                            placeholder="Cómo figura en tu DNI"
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="checkoutTelefono">
+                        <Form.Label className="checkout-label">Teléfono</Form.Label>
+                        <Form.Control
+                            className="checkout-input"
+                            type="tel"
+                            name="telefono"
+                            value={formData.telefono}
+                            onChange={handleChange}
+                            placeholder="Código de área sin 0 y sin 15"
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="checkoutDireccion">
+                        <Form.Label className="checkout-label">Domicilio de envío</Form.Label>
+                        <Form.Control
+                            className="checkout-input"
+                            type="text"
+                            name="direccion"
+                            value={formData.direccion}
+                            onChange={handleChange}
+                            placeholder="Calle, número, piso, depto, etc."
+                            required
+                        />
+                    </Form.Group>
+                    <div className="d-grid">
+                        <Button type="submit" className="checkout-button mt-3">
+                            Confirmar Compra por ${total.toFixed(2)}
+                        </Button>
+                    </div>
+                </Form>
+            </Card>
         </Container>
     )
 }

@@ -64,7 +64,7 @@
     *   [x] Añadir un reconocimiento a la herramienta `LS.exe` en el `README.md`.
 *   **Preparación para Despliegue:**
     *   [x] Configurar el proyecto para subirlo a un repositorio de GitHub.
-    *   [ ] Desplegar la aplicación en Vercel, configurando las variables de entorno (`.env`) para la encriptación de credenciales.
+    *   [x] Desplegar la aplicación en Vercel, configurando las variables de entorno (`.env`) para la encriptación de credenciales.
 
 ---
 

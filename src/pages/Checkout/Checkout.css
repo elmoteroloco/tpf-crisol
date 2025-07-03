@@ -1,0 +1,32 @@
+.checkout-card {
+    background-color: var(--bg-color3);
+    color: var(--color1);
+    width: 100%;
+    max-width: 45rem; /* Un poco más ancho para que entren más campos */
+    position: relative;
+    z-index: 10;
+    border: none;
+}
+
+.checkout-label {
+    color: var(--color1);
+}
+
+.checkout-input {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+    border: 1px solid var(--bg-color4);
+}
+
+.checkout-input:focus {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+    border-color: var(--color1);
+    box-shadow: 0 0 0 0.25rem rgba(216, 142, 4, 0.25);
+}
+
+.checkout-button {
+    background-color: var(--color1);
+    color: var(--color-texto-btnes);
+    border-color: var(--color-texto-btnes);
+}
