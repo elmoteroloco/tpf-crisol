@@ -43,15 +43,16 @@
 *   **Notificaciones Diferenciadas:**
     *   [x] Implementar `React Toastify` para notificaciones de administrador (CRUD de productos).
     *   [x] Reservar `SweetAlert2` para interacciones del usuario (agregar al carrito, login, etc.).
-*   **Optimización de Imágenes:**
-    *   [ ] Investigar e implementar `srcset` para servir imágenes de diferentes resoluciones según el dispositivo.
-    *   [ ] Comprimir imágenes existentes para reducir su peso.
+*   **Optimización de Rendimiento (Completado):**
+    *   [x] Implementar optimización de imágenes a través de la URL de Cloudinary.
+    *   [x] Reemplazar GIFs animados por componentes de video (`<video>`) para reducir drásticamente el tiempo de carga y el uso de CPU.
 *   **Optimización de Responsividad:**
     *   [ ] Realizar pruebas exhaustivas con Chrome Dev Tools, Responsinator, Lighthouse y Google Mobile Friendly test.
 *   **Accesibilidad (A11y):**
-    *   [ ] Realizar una auditoría de accesibilidad.
-    *   [ ] Verificar la navegación completa por teclado.
-    *   [ ] Asegurar un contraste de colores adecuado en toda la aplicación.
+   *   [x] Realizar prueba de navegación por teclado y corregir alineación de tarjetas.
+    *   [x] Añadir etiquetas ARIA a elementos interactivos (ej: íconos en Footer).
+    *   [ ] Correr auditoría con Lighthouse y corregir errores de contraste y etiquetado.
+
 
 ### 3. Calidad de Código y SEO
 

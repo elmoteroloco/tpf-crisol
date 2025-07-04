@@ -4,6 +4,13 @@ import { Card as BootstrapCard, Button, OverlayTrigger, Tooltip } from "react-bo
 import { RiSearchEyeLine } from "react-icons/ri"
 
 function Card({ producto, isInteractive }) {
+    const getOptimizedImageUrl = (url) => {
+        if (url.includes("res.cloudinary.com")) {
+            return url.replace("/upload/", "/upload/w_400,q_auto/")
+        }
+        return url
+    }
+
     const linkProps = !isInteractive
         ? {
               "aria-disabled": true,
@@ -15,7 +22,11 @@ function Card({ producto, isInteractive }) {
         <BootstrapCard
             className={`producto-card ${!isInteractive ? "producto-card-disabled" : ""}`}>
             <Link to={`/productos/${producto.id}`} {...linkProps}>
-                <BootstrapCard.Img variant="top" src={producto.imagen} alt={producto.nombre} />
+                <BootstrapCard.Img
+                    variant="top"
+                    src={getOptimizedImageUrl(producto.imagen)}
+                    alt={producto.nombre}
+                />
             </Link>
             <BootstrapCard.Body>
                 <BootstrapCard.Title className="producto-nombre">

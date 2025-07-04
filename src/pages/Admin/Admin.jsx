@@ -13,16 +13,16 @@ const AdminContainer = styled.div`
     justify-content: center;
 `
 
-const LayeredImage = styled.img`
+const LayeredVideo = styled.video`
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 12px;
     position: absolute;
     top: 0;
     left: 0;
-    object-fit: ${(props) => props.objectFit || "cover"};
     z-index: ${(props) => props.zIndex};
     opacity: ${(props) => props.opacity || 1};
+    object-fit: cover;
 `
 
 export default function Admin() {
@@ -31,20 +31,21 @@ export default function Admin() {
     if (!user) {
         return <Navigate to="/" replace />
     }
+
+    const cloudName = "dy5u2krtv"
+    const transformations = "q_auto,f_auto"
+
+    const videoKnightUrl = `https://res.cloudinary.com/${cloudName}/video/upload/${transformations}/knightcodeezgifcomgiftomp4converter_fjycc8`
+    const videoMatrixUrl = `https://res.cloudinary.com/${cloudName}/video/upload/${transformations}/Digital_rain_animation_small_letters_clear_wikiezgifcomgiftomp4converter_xk6wsw`
+
     return (
         <AdminContainer>
-            <LayeredImage
-                src="https://res.cloudinary.com/dy5u2krtv/image/upload/v1749147265/knight-code_vbs055.gif"
-                alt="Knight code"
-                zIndex={1}
-            />
-            <LayeredImage
-                src="https://res.cloudinary.com/dy5u2krtv/image/upload/v1749214060/Digital_rain_animation_small_letters_clear_wiki_f7qrn7.gif"
-                alt="Matrix code"
-                objectFit="contain"
-                zIndex={2}
-                opacity={0.6}
-            />
+            <LayeredVideo zIndex={1} autoPlay loop muted playsInline>
+                <source src={videoKnightUrl} />
+            </LayeredVideo>
+            <LayeredVideo zIndex={2} opacity={0.6} autoPlay loop muted playsInline>
+                <source src={videoMatrixUrl} />
+            </LayeredVideo>
         </AdminContainer>
     )
 }

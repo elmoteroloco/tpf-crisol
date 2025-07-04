@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { useModalContext } from "./contexts/ModalContext"
 import Nav from "./components/Nav"
+import BackgroundVideo from "./components/BackgroundVideo"
 import Footer from "./components/Footer"
 import Contacto from "./pages/Contact/Contacto"
 import AutRutasProtegidas from "./components/AutRutasProtegidas"
@@ -25,7 +26,9 @@ function App() {
 
     return (
         <Router>
-            <div>
+            <div className="app-container">
+                <BackgroundVideo videoName="fireChackuezgifcomgiftomp4converter_ynccdi" />
+
                 <Nav />
                 <ToastContainer
                     position="bottom-right"

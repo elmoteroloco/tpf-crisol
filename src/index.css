@@ -40,12 +40,6 @@
 
 body {
     margin: 0;
-    background-image: url("https://res.cloudinary.com/dy5u2krtv/image/upload/v1749147265/fireChacku_wsibxq.gif");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-    min-height: 100vh;
 }
 
 .navbar {
