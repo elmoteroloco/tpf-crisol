@@ -1,9 +1,9 @@
 .footer-container {
     padding: 2px 0;
     text-align: center;
-    color: var(--color4);
+    color: var(--bg-color4);
     flex-shrink: 0;
-    background-color: var(--bg-color4);
+    background-color: var(--color4);
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
