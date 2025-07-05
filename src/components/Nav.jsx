@@ -24,7 +24,7 @@ function Nav() {
         <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
             <Container>
                 <Navbar.Toggle
-                    aria-label="Navegar desde lateral"
+                    aria-label="Abrir menú de navegación"
                     aria-controls="offcanvas-navbar"
                     onClick={handleShow}
                     className="d-lg-none"
