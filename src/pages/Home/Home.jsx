@@ -5,8 +5,8 @@ function Home() {
     return (
         <div>
             <Meta
-                title="| Crisol - Regalería de Alta Gama y Empresarial"
-                description="Encontrá artículos de diseño artesanal, clips billeteros, bolsos, y accesorios de oficina exclusivos para regalos de alta gama y empresariales."
+                title="| TPF-React-Crisol"
+                description="Proyecto Final para el curso de React en Talento Tech. Un e-commerce de regalería de alta gama y artículos de diseño."
             />
             <Header />
         </div>
