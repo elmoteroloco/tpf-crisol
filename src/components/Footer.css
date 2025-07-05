@@ -3,7 +3,7 @@
     text-align: center;
     color: var(--color1);
     flex-shrink: 0;
-    background-color: var(--bg-color1);
+    background-color: var(--bg-color6);
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
