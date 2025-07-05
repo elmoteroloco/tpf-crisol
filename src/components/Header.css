@@ -57,7 +57,7 @@
 
 .carousel-section {
     padding: 0 25px 10px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: var(--bg-color1);
     text-align: center;
     position: relative;
     z-index: 1;
