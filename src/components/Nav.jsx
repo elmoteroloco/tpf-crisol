@@ -88,12 +88,13 @@ function Nav() {
                 {/* mobile */}
                 <Navbar.Offcanvas
                     id="offcanvas-navbar"
-                    aria-label="Menú Principal"
+                    role="dialog"
+                    aria-labelledby="offcanvas-navbar-label"
                     placement="end"
                     show={showOffcanvas}
                     onHide={handleClose}>
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title>Menú Principal</Offcanvas.Title>
+                        <Offcanvas.Title id="offcanvas-navbar-label">Menú</Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <NavBS className="justify-content-evenly d-lg-none">
