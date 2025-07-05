@@ -4,7 +4,7 @@
     color: var(--color1);
     flex-shrink: 0;
     background-color: var(--bg-color1);
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
 .footer-disclaimer {

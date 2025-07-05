@@ -23,6 +23,8 @@
 *   [ ] Correr auditoría final con Lighthouse y corregir posibles errores de contraste y etiquetado restantes.
 *   [ ] **Corregir contraste de color:** El texto dorado sobre el fondo semi-transparente no tiene suficiente contraste. Elementos afectados: `p.mb-1`, `p.mb-0.footer-disclaimer`, `footer.footer-container` y `body`.
 *   [ ] **Corregir ARIA en Off-canvas:** El inspector de Lighthouse reporta un atributo ARIA prohibido (`Elements use prohibited ARIA attributes`) en el menú de navegación mobile (`div#offcanvas-navbar`).
+### 4. Documentación
+*   [ ] **Actualizar Readme.md:** Una vez corregidos los puntos de Lighthouse, agregar los porcentajes finales al `Readme.md` para mostrar los resultados.
 
 ---
 

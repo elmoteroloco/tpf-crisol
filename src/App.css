@@ -17,7 +17,7 @@
     flex-direction: column;
     padding-top: 4.375rem;
     background-color: var(--bg-color1);
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
 }
 
 .offcanvas {
