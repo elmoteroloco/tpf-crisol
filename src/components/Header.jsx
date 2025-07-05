@@ -63,7 +63,7 @@ const CAROUSEL_AUTO_PLAY_INTERVAL = 3333
 
 const getOptimizedImageUrl = (url) => {
     if (url.includes("res.cloudinary.com")) {
-        return url.replace("/upload/", "/upload/w_1000,q_auto,f_auto/")
+        return url.replace("/upload/", "/upload/w_1000,q_auto,f_auto,dpr_auto/")
     }
     return url
 }
@@ -109,8 +109,8 @@ function Header() {
                                         className="d-block carousel-image"
                                         src={getOptimizedImageUrl(item.imageUrl)}
                                         alt={item.altText}
-                                        loading={index === 0 ? "eager" : "lazy"}
-                                        fetchPriority={index === 0 ? "high" : "auto"}
+                                        loading={index > 0 ? "lazy" : undefined}
+                                        fetchPriority={index === 0 ? "high" : undefined}
                                     />
                                 </Carousel.Item>
                             ))}
