@@ -3,10 +3,10 @@
     text-align: center;
     color: var(--color1);
     flex-shrink: 0;
-    background-color: transparent;
+    background-color: var(--bg-color1);
 }
 
 .footer-disclaimer {
     font-size: 0.8rem;
-    opacity: 0.7;
+    opacity: 0.8;
 }
