@@ -93,7 +93,9 @@ function Nav() {
                     show={showOffcanvas}
                     onHide={handleClose}>
                     <Offcanvas.Header closeButton>
-                        <Offcanvas.Title id="offcanvas-navbar-label">Menú</Offcanvas.Title>
+                        <Offcanvas.Title id="offcanvas-navbar-label">
+                            Menú Principal
+                        </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <NavBS className="justify-content-evenly d-lg-none">
