@@ -18,7 +18,7 @@ function Footer() {
                     </Col>
                     <IconContext.Provider
                         value={{
-                            color: "#000",
+                            color: "#fff",
                             size: "2em"
                         }}>
                         <Col md={6} className="text-md-end text-center">
