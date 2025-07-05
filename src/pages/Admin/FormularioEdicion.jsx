@@ -4,7 +4,7 @@ import { useProductosContext } from "../../contexts/ProductosContext"
 import { useAuthContext } from "../../contexts/AuthContext"
 import LoadingBar from "../../components/LoadingBar"
 import { toast } from "react-toastify"
-import { Form, Button, Container, Card } from "react-bootstrap"
+import { Form, Button, Container, Card, Dropdown } from "react-bootstrap"
 import "./FormularioEdicion.css"
 
 function FormularioEdicion() {
@@ -62,6 +62,10 @@ function FormularioEdicion() {
     const handleChange = (e) => {
         const { name, value } = e.target
         setProducto({ ...producto, [name]: value })
+    }
+
+    const handleCategorySelect = (eventKey) => {
+        setProducto({ ...producto, categoria: eventKey })
     }
 
     const handleSubmit = async (e) => {
@@ -122,7 +126,7 @@ function FormularioEdicion() {
     return (
         <Container className="d-flex justify-content-center align-items-center vh-100">
             <Card className="p-4 shadow-lg form-edit-card">
-                <h2 className="text-center mb-4">Edición de artículos</h2>
+                <h2 className="text-center mb-4">Editar artículos</h2>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formNombreProducto">
                         <Form.Label className="form-edit-label">Denominación:</Form.Label>
@@ -138,19 +142,22 @@ function FormularioEdicion() {
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formCategoriaProducto">
                         <Form.Label className="form-edit-label">Categoría:</Form.Label>
-                        <Form.Select
-                            className="form-edit-input"
-                            name="categoria"
-                            value={producto.categoria || ""}
-                            onChange={handleChange}
-                            required>
-                            <option value="">Selecciona una categoría</option>
-                            {categorias.map((cat) => (
-                                <option key={cat} value={cat}>
-                                    {cat}
-                                </option>
-                            ))}
-                        </Form.Select>
+                        <Dropdown onSelect={handleCategorySelect} className="d-block">
+                            <Dropdown.Toggle
+                                className="dropdown-edit-toggle w-100"
+                                variant="secondary"
+                                id="dropdown-categoria-edicion">
+                                {producto.categoria || "Selecciona una categoría"}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu className="dropdown-edit-menu">
+                                {categorias.map((cat) => (
+                                    <Dropdown.Item key={cat} eventKey={cat}>
+                                        {cat}
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formImagenProducto">

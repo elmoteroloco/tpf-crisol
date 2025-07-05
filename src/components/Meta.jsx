@@ -12,10 +12,11 @@ const Meta = ({ title, description, keywords }) => {
 }
 
 Meta.defaultProps = {
-    title: "Crisol E-commerce",
+    title: "| TPF-React-Crisol",
     description:
-        "Artículos de diseño artesanal para caballeros y empresa. Regalería de alta gama y empresarial.",
-    keywords: "diseño, regalos, artesanal, oficina, hombres"
+        "Crisol: Regalería de alta gama y empresarial. Encontrá artículos de diseño artesanal, clips billeteros, bolsos, y accesorios de oficina exclusivos.",
+    keywords:
+        "regalos, diseño, artesanal, oficina, empresarial, clips billeteros, joyería, bolsos, bufandas"
 }
 
 export default Meta

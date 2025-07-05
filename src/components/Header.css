@@ -1,4 +1,3 @@
-/* Keyframes for animations */
 @keyframes h1PulseEffect {
     0% {
         transform: scale(1);
@@ -22,7 +21,6 @@
     }
 }
 
-/* Main banner container */
 .header-banner {
     position: fixed;
     top: 65px;
@@ -37,7 +35,6 @@
     text-align: center;
 }
 
-/* H1 Title Style */
 .header-title {
     font-size: clamp(2.5rem, 8vw, 7rem);
     color: rgba(139, 0, 0, 0.25);
@@ -48,7 +45,6 @@
     line-height: 1;
 }
 
-/* Wrapper for the carousel section */
 .carousel-wrapper {
     margin-top: 120px;
     z-index: 1;
@@ -56,50 +52,46 @@
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     transition: margin-top 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
 }
 
-/* Carousel section container */
 .carousel-section {
     padding: 0 25px 10px;
-    background-color: var(--carousel-bg-color);
+    background-color: rgba(0, 0, 0, 0.2);
     text-align: center;
     position: relative;
     z-index: 1;
     margin: 0 auto;
-    height: 440px;
+    aspect-ratio: 1 / 1;
+    max-height: 80vh;
     width: 100%;
     max-width: 1000px;
 }
 
-/* Carousel image style */
+@media (min-width: 768px) {
+    .carousel-section {
+        aspect-ratio: 16 / 9;
+        max-height: 500px;
+    }
+}
+
 .carousel-image {
-    display: block;
-    max-height: 100%;
-    max-width: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
 }
 
-/* Overrides for React-Bootstrap Carousel */
 .carousel,
 .carousel-inner {
-    height: 100% !important;
-    background-color: transparent !important;
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
+    height: 100%;
+    background-color: transparent;
+    overflow: hidden;
 }
 
 .carousel-item {
-    height: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    position: relative !important;
-}
-
-.carousel-item img,
-.carousel-inner img {
-    max-width: 100vw !important;
-    width: 100%;
-    height: auto;
-    display: block;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }

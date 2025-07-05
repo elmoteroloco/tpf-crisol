@@ -103,7 +103,10 @@ function CarritoCard({ producto, funcionDisparadora, onCantidadChange }) {
                                 Eliminar artículo
                             </Tooltip>
                         }>
-                        <Button onClick={borrarDelCarrito} className="btn-remove-from-cart">
+                        <Button
+                            onClick={borrarDelCarrito}
+                            className="btn-remove-from-cart"
+                            aria-label={`Eliminar ${producto.nombre} del carrito`}>
                             <BsCartDash />
                         </Button>
                     </OverlayTrigger>

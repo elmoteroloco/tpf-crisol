@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Navigate } from "react-router-dom"
 import { useAuthContext } from "../../contexts/AuthContext"
 import { useProductosContext } from "../../contexts/ProductosContext"
-import { Form, Button, Container, Card } from "react-bootstrap"
+import { Form, Button, Container, Card, Dropdown } from "react-bootstrap"
 import { toast } from "react-toastify"
 import "./FormularioProducto.css"
 
@@ -53,6 +53,10 @@ function FormularioProducto() {
         setProducto({ ...producto, [name]: value })
     }
 
+    const handleCategorySelect = (eventKey) => {
+        setProducto({ ...producto, categoria: eventKey })
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const validarForm = validarFormulario()
@@ -100,19 +104,22 @@ function FormularioProducto() {
 
                     <Form.Group className="mb-3" controlId="formCategoriaProducto">
                         <Form.Label className="form-add-label">Categoría:</Form.Label>
-                        <Form.Select
-                            className="form-add-input"
-                            name="categoria"
-                            value={producto.categoria}
-                            onChange={handleChange}
-                            required>
-                            <option value="">Selecciona una categoría</option>
-                            {categorias.map((cat) => (
-                                <option key={cat} value={cat}>
-                                    {cat}
-                                </option>
-                            ))}
-                        </Form.Select>
+                        <Dropdown onSelect={handleCategorySelect} className="d-block">
+                            <Dropdown.Toggle
+                                className="dropdown-add-toggle w-100"
+                                variant="secondary"
+                                id="dropdown-categoria-agregar">
+                                {producto.categoria || "Selecciona una categoría"}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu className="dropdown-add-menu">
+                                {categorias.map((cat) => (
+                                    <Dropdown.Item key={cat} eventKey={cat}>
+                                        {cat}
+                                    </Dropdown.Item>
+                                ))}
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formImagenProducto">

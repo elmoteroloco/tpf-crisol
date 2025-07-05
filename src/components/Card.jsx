@@ -43,6 +43,7 @@ function Card({ producto, isInteractive }) {
                         to={`/productos/${producto.id}`}
                         className="producto-ver-mas-btn"
                         disabled={!isInteractive}
+                        aria-label={`Ver detalle de ${producto.nombre}`}
                         {...linkProps}>
                         <RiSearchEyeLine />
                     </Button>
