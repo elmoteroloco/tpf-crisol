@@ -86,16 +86,6 @@ function Header() {
         return () => clearTimeout(timer)
     }, [activeIndex, isPaused])
 
-    useEffect(() => {
-        const element = carouselWrapperRef.current
-        if (!element) return
-
-        const preventScroll = (e) => e.preventDefault()
-
-        element.addEventListener("wheel", preventScroll, { passive: false })
-        return () => element.removeEventListener("wheel", preventScroll)
-    }, [])
-
     return (
         <>
             <div className="header-banner">

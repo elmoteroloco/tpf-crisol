@@ -53,7 +53,11 @@ function Nav() {
                             placement="bottom"
                             delay={{ show: 250, hide: 400 }}
                             overlay={<Tooltip id="cart-tooltip-desktop">Ir al carrito</Tooltip>}>
-                            <NavBS.Link as={Link} to="/carrito" className="nav-link-carrito">
+                            <NavBS.Link
+                                as={Link}
+                                to="/carrito"
+                                className="nav-link-carrito"
+                                aria-label="Ir al carrito">
                                 <BsCartCheck className="mx-2" />
                                 <LuSquareArrowRight className="mx-2" />
                                 <BadgeCarrito />
@@ -131,6 +135,7 @@ function Nav() {
                                         as={Link}
                                         to="/carrito"
                                         className="nav-link-carrito"
+                                        aria-label="Ir al carrito"
                                         onClick={handleClose}>
                                         <BsCartCheck className="mx-2" />
                                         <LuSquareArrowRight className="mx-2" />

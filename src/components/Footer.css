@@ -2,10 +2,7 @@
     padding: 2px 0;
     text-align: center;
     color: var(--color1);
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1030;
+    flex-shrink: 0;
     background-color: transparent;
 }
 
