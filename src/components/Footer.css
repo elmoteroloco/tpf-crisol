@@ -1,13 +1,11 @@
 .footer-container {
     padding: 2px 0;
     text-align: center;
-    color: var(--bg-color4);
+    color: #000;
     flex-shrink: 0;
-    background-color: var(--color4);
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+    background-color: #fff;
 }
 
 .footer-disclaimer {
     font-size: 0.8rem;
-    opacity: 1;
 }

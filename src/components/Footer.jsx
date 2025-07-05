@@ -18,7 +18,7 @@ function Footer() {
                     </Col>
                     <IconContext.Provider
                         value={{
-                            color: "var(--bg-color4)",
+                            color: "#000",
                             size: "2em"
                         }}>
                         <Col md={6} className="text-md-end text-center">
@@ -26,7 +26,7 @@ function Footer() {
                                 href="https://youtube.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-light me-3"
+                                className="me-3"
                                 aria-label="Visitanos en Youtube">
                                 <BsYoutube />
                             </a>
@@ -34,7 +34,7 @@ function Footer() {
                                 href="https://reddit.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-light me-3"
+                                className="me-3"
                                 aria-label="Visitanos en Reddit">
                                 <BsReddit />
                             </a>
@@ -42,7 +42,7 @@ function Footer() {
                                 href="https://Github.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-light me-3"
+                                className="me-3"
                                 aria-label="Visitanos en Github">
                                 <BsGithub />
                             </a>
@@ -50,7 +50,7 @@ function Footer() {
                                 href="https://whatsapp.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-light"
+                                className=""
                                 aria-label="Contactanos por Whatsapp">
                                 <BsWhatsapp />
                             </a>
