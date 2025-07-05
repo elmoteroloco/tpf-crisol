@@ -41,7 +41,7 @@
     text-shadow: 0 0 15px #a40000, 0 0 19px #a40000, 0 0 15px #370000, 0 0 19px #370000;
     margin: 0;
     letter-spacing: 0.15em;
-    animation: h1PulseEffect 9s infinite ease-in-out;
+    /* animation: h1PulseEffect 9s infinite ease-in-out; */
     line-height: 1;
 }
 
