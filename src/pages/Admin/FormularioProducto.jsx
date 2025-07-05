@@ -8,17 +8,7 @@ import "./FormularioProducto.css"
 
 function FormularioProducto() {
     const { admin } = useAuthContext()
-    const { agregarProducto } = useProductosContext()
-
-    const categorias = [
-        "Barbería",
-        "Billeteros",
-        "Bolsos",
-        "Bufandas",
-        "Joyería",
-        "Oficina",
-        "Varios"
-    ]
+    const { agregarProducto, categorias } = useProductosContext()
 
     const [producto, setProducto] = useState({
         nombre: "",
@@ -113,11 +103,13 @@ function FormularioProducto() {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu className="dropdown-add-menu">
-                                {categorias.map((cat) => (
-                                    <Dropdown.Item key={cat} eventKey={cat}>
-                                        {cat}
-                                    </Dropdown.Item>
-                                ))}
+                                {categorias
+                                    .filter((cat) => cat !== "Todas")
+                                    .map((cat) => (
+                                        <Dropdown.Item key={cat} eventKey={cat}>
+                                            {cat}
+                                        </Dropdown.Item>
+                                    ))}
                             </Dropdown.Menu>
                         </Dropdown>
                     </Form.Group>

@@ -10,7 +10,6 @@
     *   [ ] Realizar pruebas exhaustivas con Chrome Dev Tools, Responsinator, Lighthouse y Google Mobile Friendly test.
 *   **Accesibilidad (A11y):**
     *   [ ] Correr auditoría final con Lighthouse y corregir posibles errores de contraste y etiquetado restantes.
-
 ---
 
 ## Log de Cambios Implementados

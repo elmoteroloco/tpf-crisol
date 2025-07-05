@@ -8,22 +8,13 @@ import { Form, Button, Container, Card, Dropdown } from "react-bootstrap"
 import "./FormularioEdicion.css"
 
 function FormularioEdicion() {
-    const { obtenerProducto, productoEncontrado, actualizarProducto } = useProductosContext()
+    const { obtenerProducto, actualizarProducto, categorias } = useProductosContext()
     const { id } = useParams()
     const navigate = useNavigate()
 
     const [producto, setProducto] = useState({})
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState(null)
-    const categorias = [
-        "Barbería",
-        "Billeteros",
-        "Bolsos",
-        "Bufandas",
-        "Joyería",
-        "Oficina",
-        "Varios"
-    ]
     const { admin } = useAuthContext()
 
     useEffect(() => {
@@ -151,11 +142,13 @@ function FormularioEdicion() {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu className="dropdown-edit-menu">
-                                {categorias.map((cat) => (
-                                    <Dropdown.Item key={cat} eventKey={cat}>
-                                        {cat}
-                                    </Dropdown.Item>
-                                ))}
+                                {categorias
+                                    .filter((cat) => cat !== "Todas")
+                                    .map((cat) => (
+                                        <Dropdown.Item key={cat} eventKey={cat}>
+                                            {cat}
+                                        </Dropdown.Item>
+                                    ))}
                             </Dropdown.Menu>
                         </Dropdown>
                     </Form.Group>

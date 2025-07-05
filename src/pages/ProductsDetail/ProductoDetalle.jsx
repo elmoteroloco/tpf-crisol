@@ -119,6 +119,7 @@ function ProductoDetalle() {
         return (
             <Container className="text-center mt-5">
                 <Card className="p-4 shadow-lg detalle-card-error">
+                    <p className="text-danger">{error}</p>
                     <Link to="/" className="btn btn-primary mt-3">
                         Volver a Inicio
                     </Link>

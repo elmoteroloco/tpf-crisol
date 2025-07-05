@@ -25,6 +25,9 @@ function BotoneraAdmin({ handleCloseOffcanvas }) {
             <NavDropdown.Item as={Link} to="/admin/agregarProductos" onClick={handleCloseOffcanvas}>
                 Agregar artículos
             </NavDropdown.Item>
+            <NavDropdown.Item as={Link} to="/admin/categorias" onClick={handleCloseOffcanvas}>
+                Gestionar Categorías
+            </NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Divider />
             <NavDropdown.Item as={Link} to="/admin" onClick={handleCloseOffcanvas}>

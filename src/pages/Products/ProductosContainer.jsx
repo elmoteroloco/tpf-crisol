@@ -12,41 +12,19 @@ import LoadingBar from "../../components/LoadingBar"
 
 function ProductosContainer() {
     const { user } = useAuthContext()
-    const { productos, obtenerProductos, filtrarPorCategoria, buscarPorNombre } =
+    const { productos, categorias, cargando, error, filtrarPorCategoria, buscarPorNombre } =
         useProductosContext()
     const { openLoginModal } = useModalContext()
     const location = useLocation()
 
-    const [loading, setLoading] = useState(true)
     const [currentPage, setCurrentPage] = useState(1)
     const [itemsPerPage] = useState(8)
-
-    useEffect(() => {
-        setLoading(true)
-        obtenerProductos()
-            .catch((err) => {
-                setError("No se pudieron cargar los productos.")
-                console.error(err)
-            })
-            .finally(() => setLoading(false))
-    }, [])
 
     useEffect(() => {
         if (location.state?.showLogin && !user) {
             openLoginModal()
         }
     }, [location.state, user, openLoginModal])
-
-    const categorias = [
-        "Todas",
-        "Barbería",
-        "Billeteros",
-        "Bolsos",
-        "Bufandas",
-        "Joyería",
-        "Oficina",
-        "Varios"
-    ]
 
     const handleCategoriaChange = (e) => {
         const categoriaSeleccionada = e.target.value
@@ -66,10 +44,18 @@ function ProductosContainer() {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber)
 
-    if (loading) {
+    if (cargando) {
         return (
             <Container className="d-flex justify-content-center align-items-center min-vh-100">
                 <LoadingBar />
+            </Container>
+        )
+    }
+
+    if (error) {
+        return (
+            <Container className="text-center mt-5">
+                <p className="text-danger fs-4">{error}</p>
             </Container>
         )
     }

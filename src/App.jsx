@@ -19,6 +19,7 @@ import Perfil from "./pages/Profile/Perfil"
 import Checkout from "./pages/Checkout/Checkout"
 import FormularioProducto from "./pages/Admin/FormularioProducto"
 import FormularioEdicion from "./pages/Admin/FormularioEdicion"
+import GestionCategorias from "./pages/Admin/GestionCategorias"
 import "./App.css"
 
 function App() {
@@ -42,70 +43,80 @@ function App() {
                     pauseOnHover
                     theme="dark"
                 />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route
-                        path="/perfil"
-                        element={
-                            <AutRutasProtegidas>
-                                <Perfil />
-                            </AutRutasProtegidas>
-                        }
-                    />
-                    <Route path="/productos" element={<ProductosContainer />} />
-                    <Route path="/productos/:id" element={<ProductoDetalle />} />
-                    <Route
-                        path="/carrito"
-                        element={
-                            <AutRutasProtegidas>
-                                <Carrito />
-                            </AutRutasProtegidas>
-                        }
-                    />
-                    <Route
-                        path="/checkout"
-                        element={
-                            <AutRutasProtegidas>
-                                <Checkout />
-                            </AutRutasProtegidas>
-                        }
-                    />
-                    <Route path="/nosotros" element={<About />} />
-                    <Route path="/contacto" element={<Contacto />} />
-                    <Route
-                        path="/admin"
-                        element={
-                            <AutRutasProtegidas soloAdmin>
-                                <Admin />
-                            </AutRutasProtegidas>
-                        }
-                    />
-                    <Route
-                        path="/admin/productos"
-                        element={
-                            <AutRutasProtegidas soloAdmin>
-                                <ProductosContainer />
-                            </AutRutasProtegidas>
-                        }
-                    />
-                    <Route
-                        path="/admin/agregarProductos"
-                        element={
-                            <AutRutasProtegidas soloAdmin>
-                                <FormularioProducto />
-                            </AutRutasProtegidas>
-                        }
-                    />
-                    <Route
-                        path="/admin/editarProducto/:id"
-                        element={
-                            <AutRutasProtegidas soloAdmin>
-                                <FormularioEdicion />
-                            </AutRutasProtegidas>
-                        }
-                    />
-                    <Route path="*" element={<Navigate to="/" />} />
-                </Routes>
+                <main className="content-wrapper">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route
+                            path="/perfil"
+                            element={
+                                <AutRutasProtegidas>
+                                    <Perfil />
+                                </AutRutasProtegidas>
+                            }
+                        />
+                        <Route
+                            path="/admin/categorias"
+                            element={
+                                <AutRutasProtegidas soloAdmin>
+                                    <GestionCategorias />
+                                </AutRutasProtegidas>
+                            }
+                        />
+                        <Route path="/productos" element={<ProductosContainer />} />
+                        <Route path="/productos/:id" element={<ProductoDetalle />} />
+                        <Route
+                            path="/carrito"
+                            element={
+                                <AutRutasProtegidas>
+                                    <Carrito />
+                                </AutRutasProtegidas>
+                            }
+                        />
+                        <Route
+                            path="/checkout"
+                            element={
+                                <AutRutasProtegidas>
+                                    <Checkout />
+                                </AutRutasProtegidas>
+                            }
+                        />
+                        <Route path="/nosotros" element={<About />} />
+                        <Route path="/contacto" element={<Contacto />} />
+                        <Route
+                            path="/admin"
+                            element={
+                                <AutRutasProtegidas soloAdmin>
+                                    <Admin />
+                                </AutRutasProtegidas>
+                            }
+                        />
+                        <Route
+                            path="/admin/productos"
+                            element={
+                                <AutRutasProtegidas soloAdmin>
+                                    <ProductosContainer />
+                                </AutRutasProtegidas>
+                            }
+                        />
+                        <Route
+                            path="/admin/agregarProductos"
+                            element={
+                                <AutRutasProtegidas soloAdmin>
+                                    <FormularioProducto />
+                                </AutRutasProtegidas>
+                            }
+                        />
+                        <Route
+                            path="/admin/editarProducto/:id"
+                            element={
+                                <AutRutasProtegidas soloAdmin>
+                                    <FormularioEdicion />
+                                </AutRutasProtegidas>
+                            }
+                        />
+                        <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
+                </main>
                 <LoginModal show={showLoginModal} onHide={closeLoginModal} />
                 <Footer />
             </div>
