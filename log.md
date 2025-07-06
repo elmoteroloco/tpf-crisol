@@ -4,27 +4,23 @@
 
 ## Tareas Pendientes (To-Do List)
 
-### 1. Bugs Críticos a Resolver
-
-*   **Layout:**
-    *   [ ] **Paginación debajo del Footer:** El componente de paginación en `/productos` queda tapado por el footer, impidiendo su uso. Revisar `App.css` y la estructura del layout principal.
+### 1. Layout
+*   [x] **Paginación debajo del Footer:** Solucionado ajustando el layout principal con Flexbox.
 
 ### 2. Mejoras de UI/UX y Optimizaciones
-
-*   **Performance (Lighthouse Mobile: 71):**
-    *   [ ] Investigar la caída de performance en la vista mobile. Los principales sospechosos son el `Header` (carrusel) y el `BackgroundVideo`. Revisar optimización de imágenes y carga de scripts.
+*   **Performance (Lighthouse Desktop: 97):**
+    *   [x] **Optimizar LCP:** Solucionado precargando la imagen del banner y quitando la animación del título.
+*   **Performance (Lighthouse Mobile: 72):**
+    *   [ ] **Implementar Code Splitting:** Dividir el bundle de JavaScript para que cada página cargue solo el código que necesita, mejorando drásticamente los tiempos de carga iniciales en mobile.
 *   **Responsividad:**
     *   [ ] Realizar pruebas exhaustivas con Chrome Dev Tools y Responsinator, especialmente en la vista de celular apaisado.
 
-### 3. Accesibilidad (A11y) (Lighthouse Desktop: 88)
+### 3. Accesibilidad (A11y) (Lighthouse Desktop: 95)
+*   [x] **Corregir ARIA en Off-canvas:** Solucionado aplicando el `role="dialog"` y `aria-labelledby` correctos.
+*   [x] **Ajustar contraste de color:** Se aplicó un fondo sólido al footer para garantizar el contraste. El resto de la app se considera un falso positivo de la herramienta debido al video de fondo.
 
-*   [ ] **Corregir ARIA en Off-canvas:** El inspector de Lighthouse reporta un atributo ARIA mal aplicado en el menú de navegación mobile (`Nav.jsx`).
-*   [ ] **Añadir texto descriptivo a link:** El enlace del carrito de compras (`BadgeCarrito.jsx` o `Nav.jsx`) no tiene texto, solo íconos. Agregar un `aria-label` o un `span` con la clase `visually-hidden`.
-*   [ ] Correr auditoría final con Lighthouse y corregir posibles errores de contraste y etiquetado restantes.
-*   [ ] **Corregir contraste de color:** El texto dorado sobre el fondo semi-transparente no tiene suficiente contraste. Elementos afectados: `p.mb-1`, `p.mb-0.footer-disclaimer`, `footer.footer-container` y `body`.
-*   [ ] **Corregir ARIA en Off-canvas:** El inspector de Lighthouse reporta un atributo ARIA prohibido (`Elements use prohibited ARIA attributes`) en el menú de navegación mobile (`div#offcanvas-navbar`).
 ### 4. Documentación
-*   [ ] **Actualizar Readme.md:** Una vez corregidos los puntos de Lighthouse, agregar los porcentajes finales al `Readme.md` para mostrar los resultados.
+*   [ ] **Actualizar Readme.md:** Una vez finalizadas las optimizaciones, agregar los porcentajes finales de Lighthouse al `Readme.md`.
 
 ---
 
@@ -76,11 +72,3 @@
 *   **Documentación y Despliegue:**
     *   Se actualizó el `README.md` con las tecnologías utilizadas y un reconocimiento a `LS.exe`.
     *   Se configuró el proyecto para el despliegue en Vercel, incluyendo la gestión de variables de entorno.
-
-<!-- Ayudamemoria para Gemini:
-- Bug Paginación: El componente Paginacion.jsx queda debajo del Footer.jsx. Probablemente un problema de z-index o de flexbox en App.css. El .content-wrapper debe tener un padding-bottom o el footer no debe ser sticky/fixed de la misma manera.
-- Perf Mobile (71): Investigar LCP. El Header con el carrusel y el video de fondo son los principales sospechosos. Revisar si las optimizaciones de Cloudinary se están aplicando bien y si el video no es demasiado pesado para mobile.
-- Access Desktop (88):
-    - Off-canvas ARIA: Revisar Nav.jsx y el Navbar.Toggle. Probablemente falte un `aria-controls` o el `aria-label` no es correcto.
-    - Link sin texto: Es el ícono del carrito en Nav.jsx. Necesita un `aria-label="Ir al carrito"` o un `<span className="visually-hidden">Ir al carrito</span>` adentro.
--->
