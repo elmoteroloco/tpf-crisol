@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
 
     const login = (username) => {
         const token = `fake-token-${username}`
-        if (username === "elmo@gmail.com") {
+        if (username === "admin@gmail.com") {
             setAdmin(true)
         } else {
             setAdmin(false)
