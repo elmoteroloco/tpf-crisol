@@ -8,7 +8,7 @@ Esta aplicación es el Trabajo Práctico Final desarrollado como parte de la cur
 
 *   **React + Vite:** Como base para la creación de la interfaz de usuario, aprovechando su entorno de desarrollo rápido y optimizado.
 *   **Firebase:** Utilizado como Backend-as-a-Service (BaaS) para funcionalidades clave:
-    *   **Firestore Database:** Base de datos NoSQL en tiempo real para la gestión completa de productos (CRUD).
+    *   **Firestore Database:** Base de datos NoSQL en tiempo real para la gestión completa de Artículos (CRUD) y la administración de Categorías.
     *   **Authentication:** Sistema de registro e inicio de sesión de usuarios, con soporte para Email/Contraseña y proveedores como Google.
 *   **React-Bootstrap:** Para la implementación de componentes de UI estilizados y responsivos, basados en el popular framework Bootstrap.
 *   **React Router DOM:** Para la gestión de rutas y navegación en esta Single Page Application (SPA).
