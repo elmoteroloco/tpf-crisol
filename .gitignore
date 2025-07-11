@@ -1,0 +1,28 @@
+# Logs
+logs
+*.log
+npm-debug.log* # npm
+yarn-debug.log* # yarn
+yarn-error.log* # yarn
+pnpm-debug.log* # pnpm
+lerna-debug.log* # lerna
+
+# Dependencias
+/node_modules
+
+# Archivos de build y producción
+/dist
+/dist-ssr
+
+# Archivos de variables de entorno
+# ¡MUY IMPORTANTE! Nunca subir las claves secretas a un repositorio público.
+.env
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+Thumbs.db

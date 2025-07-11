@@ -1,0 +1,32 @@
+.contacto-container {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.transparent-dark-card {
+    background-color: rgba(33, 37, 41, 0.9) !important;
+    color: var(--color1);
+}
+
+.contact-form-dark h2 {
+    color: var(--color1, rgb(216, 142, 4));
+}
+
+.contact-form-dark .form-control {
+    background-color: #343a40;
+    color: #f8f9fa;
+    border: 1px solid #495057;
+}
+
+.contact-form-dark .form-control::placeholder {
+    color: #6c757d;
+}
+
+.contact-form-dark .form-control:focus {
+    background-color: #495057;
+    color: #f8f9fa;
+    border-color: #80bdff;
+    box-shadow: none;
+}

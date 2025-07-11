@@ -1,0 +1,55 @@
+.gestion-categorias-card {
+    background-color: var(--bg-color3);
+    color: var(--color1);
+    border: 1px solid var(--shadow-color2);
+    max-width: 35rem;
+    width: 100%;
+}
+
+.list-group-item {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+    border-color: var(--shadow-color1);
+}
+
+.list-group-item:hover {
+    background-color: var(--bg-color4);
+}
+
+.category-list-wrapper {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--shadow-color1);
+    border-radius: var(--bs-border-radius);
+}
+.gestion-categorias-label {
+    color: var(--color1);
+}
+
+.gestion-categorias-input {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+    border-color: var(--shadow-color1);
+}
+
+.gestion-categorias-input::placeholder {
+    color: var(--color3);
+}
+
+.gestion-categorias-input:focus {
+    background-color: var(--bg-color4);
+    color: var(--color1);
+    border-color: var(--color1);
+    box-shadow: 0 0 0 0.25rem rgba(216, 142, 4, 0.25);
+}
+
+.gestion-categorias-button {
+    background-color: var(--color1);
+    border-color: var(--color-texto-btnes);
+    color: var(--color-texto-btnes);
+}
+
+.gestion-categorias-button:hover {
+    background-color: var(--color3);
+    border-color: var(--color-texto-btnes);
+}

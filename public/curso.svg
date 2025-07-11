@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 27.7.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+
+<svg
+   version="1.1"
+   id="mdi-school"
+   x="0px"
+   y="0px"
+   viewBox="0 0 512 512"
+   style="enable-background:new 0 0 512 512;"
+   xml:space="preserve"
+   sodipodi:docname="curso.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1" /><sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="1.0800781"
+   inkscape:cx="255.53707"
+   inkscape:cy="256"
+   inkscape:window-width="1366"
+   inkscape:window-height="697"
+   inkscape:window-x="1016"
+   inkscape:window-y="-8"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="mdi-school" />
+<g
+   id="g1"
+   style="fill-rule:nonzero;fill:#aa0000">
+	<path
+   d="M256,46.55L0,186.18l256,139.64l209.45-114.27v160.81H512V186.18 M93.09,283.46v93.09L256,465.45l162.91-88.9v-93.09   L256,372.36L93.09,283.46z"
+   id="path1"
+   style="fill-rule:nonzero;fill:#aa0000" />
+</g>
+</svg>

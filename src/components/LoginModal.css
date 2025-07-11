@@ -1,0 +1,46 @@
+.login-modal-custom {
+    z-index: 1500;
+}
+
+.login-modal-custom .modal-content {
+    background-color: var(--bg-color3);
+    color: var(--color1);
+    border: 1px solid var(--bg-color4);
+}
+
+.login-modal-custom .modal-header {
+    border-bottom: 1px solid var(--bg-color4);
+}
+
+.login-modal-custom .modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.login-modal-custom .form-control {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+    border: 1px solid var(--bg-color4);
+}
+
+.login-modal-custom .form-control:focus {
+    background-color: var(--bg-color6);
+    color: var(--color1);
+    border-color: var(--color1);
+    box-shadow: 0 0 0 0.25rem rgba(216, 142, 4, 0.25);
+}
+
+.login-modal-custom .btn-primary {
+    background-color: var(--bg-color-btnemail);
+    color: var(--color-texto-btnes);
+    border-color: var(--border-color-btnes);
+}
+
+.login-modal-custom .btn-secondary {
+    background-color: var(--bg-color-btnregistro);
+    color: var(--color-texto-btnes);
+    border-color: var(--border-color-btnes);
+}
+
+.login-modal-custom .btn-link {
+    color: var(--color1);
+}

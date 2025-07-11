@@ -1,0 +1,7 @@
+.nav-link-ingresar {
+    cursor: pointer;
+}
+
+.nav-link-carrito {
+    background-color: var(--bg-color5);
+}

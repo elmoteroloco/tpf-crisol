@@ -1,0 +1,57 @@
+.producto-card {
+    background-color: var(--bg-color5);
+    border: 1px solid var(--border-color-cards, #444);
+    color: var(--color1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.producto-card:not(.producto-card-disabled):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.producto-card .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
+
+.producto-card .card-body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1rem;
+}
+
+.producto-card .producto-nombre {
+    font-size: 1.1rem;
+    color: var(--color1);
+    text-align: center;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.producto-card .producto-ver-mas-btn {
+    background-color: var(--bg-color4);
+    border-color: var(--bg-color4);
+    color: var(--color1);
+    width: 100%;
+}
+
+.producto-card .producto-ver-mas-btn:hover {
+    background-color: var(--color1);
+    color: var(--bg-color4);
+}
+
+/* Estado deshabilitado */
+.producto-card-disabled {
+    filter: grayscale(80%);
+    opacity: 0.7;
+}
+
+.producto-card-disabled .btn {
+    pointer-events: none;
+}
