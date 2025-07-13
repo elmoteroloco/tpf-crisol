@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
         const storedUser = sessionStorage.getItem("authUser")
         if (storedToken && storedUser) {
             setUser(storedUser)
-            if (storedUser === "admin@gmail.com") {
+            if (storedUser === "31M073r010c0@gmail.com") {
                 setAdmin(true)
             } else {
                 setAdmin(false)
@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
 
     const login = (username) => {
         const token = `fake-token-${username}`
-        if (username === "admin@gmail.com") {
+        if (username === "31M073r010c0@gmail.com") {
             setAdmin(true)
         } else {
             setAdmin(false)
