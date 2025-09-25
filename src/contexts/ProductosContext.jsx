@@ -60,15 +60,18 @@ export function ProductosProvider({ children }) {
             body: JSON.stringify(producto),
         })
 
+        const respuestaApi = await response.json()
+
         if (!response.ok) {
-            const errorData = await response.text()
-            throw new Error(errorData || "Error al agregar producto en el backend.")
+            throw new Error(respuestaApi.message || "Error al agregar producto en el backend.")
         }
 
-        const nuevoProducto = await response.json()
-        setProductosOriginales((prev) => [...prev, nuevoProducto])
-        setProductos((prev) => [...prev, nuevoProducto])
-        return nuevoProducto
+        if (!respuestaApi.simulated) {
+            setProductosOriginales((prev) => [...prev, respuestaApi])
+            setProductos((prev) => [...prev, respuestaApi])
+        }
+
+        return respuestaApi
     }
 
     function obtenerProducto(id) {
@@ -104,18 +107,22 @@ export function ProductosProvider({ children }) {
             body: JSON.stringify(productoActualizado),
         })
 
+        const respuestaApi = await response.json()
+
         if (!response.ok) {
-            const errorData = await response.text()
-            throw new Error(errorData || "Error al actualizar producto en el backend.")
+            throw new Error(respuestaApi.message || "Error al actualizar producto en el backend.")
         }
 
-        const productoConId = await response.json()
-        setProductosOriginales((prev) => prev.map((p) => (p.id === id ? productoConId : p)))
-        setProductos((prev) => prev.map((p) => (p.id === id ? productoConId : p)))
-        if (productoEncontrado && productoEncontrado.id === id) {
-            setProductoEncontrado(productoConId)
+        if (!respuestaApi.simulated) {
+            const productoFinal = { ...productoActualizado, id }
+            setProductosOriginales((prev) => prev.map((p) => (p.id === id ? productoFinal : p)))
+            setProductos((prev) => prev.map((p) => (p.id === id ? productoFinal : p)))
+            if (productoEncontrado && productoEncontrado.id === id) {
+                setProductoEncontrado(productoFinal)
+            }
         }
-        return productoConId
+
+        return respuestaApi
     }
 
     const eliminarProducto = async (id) => {
@@ -129,18 +136,21 @@ export function ProductosProvider({ children }) {
             },
         })
 
+        const respuestaApi = await response.json()
+
         if (!response.ok) {
-            const errorData = await response.text()
-            throw new Error(errorData || "Error al eliminar producto en el backend.")
+            throw new Error(respuestaApi.message || "Error al eliminar producto en el backend.")
         }
 
-        const respuesta = await response.text()
-        setProductosOriginales((prev) => prev.filter((p) => p.id !== id))
-        setProductos((prev) => prev.filter((p) => p.id !== id))
-        if (productoEncontrado && productoEncontrado.id === id) {
-            setProductoEncontrado(null)
+        if (!respuestaApi.simulated) {
+            setProductosOriginales((prev) => prev.filter((p) => p.id !== id))
+            setProductos((prev) => prev.filter((p) => p.id !== id))
+            if (productoEncontrado && productoEncontrado.id === id) {
+                setProductoEncontrado(null)
+            }
         }
-        return respuesta
+
+        return respuestaApi
     }
 
     const agregarCategoria = async (nombreCategoria) => {
@@ -156,13 +166,18 @@ export function ProductosProvider({ children }) {
             body: JSON.stringify({ nombre: nombreCategoria }),
         })
 
+        const respuestaApi = await response.json()
+
         if (!response.ok) {
-            const errorData = await response.text()
-            throw new Error(errorData || "Error al agregar categoría en el backend.")
+            throw new Error(respuestaApi.message || "Error al agregar categoría en el backend.")
         }
 
-        const categoriasData = await obtenerCategoriasFirebase()
-        setCategorias(["Todas", ...categoriasData])
+        if (!respuestaApi.simulated) {
+            const categoriasData = await obtenerCategoriasFirebase()
+            setCategorias(["Todas", ...categoriasData])
+        }
+
+        return respuestaApi
     }
 
     const eliminarCategoria = async (nombreCategoria) => {
@@ -176,13 +191,18 @@ export function ProductosProvider({ children }) {
             },
         })
 
+        const respuestaApi = await response.json()
+
         if (!response.ok) {
-            const errorData = await response.text()
-            throw new Error(errorData || "Error al eliminar categoría en el backend.")
+            throw new Error(respuestaApi.message || "Error al eliminar categoría en el backend.")
         }
 
-        const categoriasData = await obtenerCategoriasFirebase()
-        setCategorias(["Todas", ...categoriasData])
+        if (!respuestaApi.simulated) {
+            const categoriasData = await obtenerCategoriasFirebase()
+            setCategorias(["Todas", ...categoriasData])
+        }
+
+        return respuestaApi
     }
 
     useEffect(() => {

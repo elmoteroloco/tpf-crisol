@@ -61,9 +61,14 @@ function FormularioProducto() {
         }
 
         try {
-            const nuevoProducto = await agregarProducto(productoParaEnviar)
-            toast.success(`Artículo "${nuevoProducto.nombre}" agregado con éxito`)
-            navigate(`/productos/${nuevoProducto.id}`)
+            const respuesta = await agregarProducto(productoParaEnviar)
+            if (respuesta?.simulated) {
+                toast.info(`(Dry-Run) ${respuesta.message}`)
+                navigate(`/admin/productos`)
+            } else {
+                toast.success(`Artículo "${respuesta.nombre}" agregado con éxito`)
+                navigate(`/productos/${respuesta.id}`)
+            }
         } catch (error) {
             toast.error(`Error: ${error.message || "No se pudo agregar el artículo"}`)
         }
@@ -156,7 +161,7 @@ function FormularioProducto() {
                     </Form.Group>
 
                     <Button type="submit" className="w-100 mt-3 form-add-button">
-                        Agregar a la DB
+                        Agregar Producto
                     </Button>
                 </Form>
             </Card>

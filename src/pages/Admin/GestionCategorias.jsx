@@ -17,8 +17,12 @@ function GestionCategorias() {
             return
         }
         try {
-            await agregarCategoria(nuevaCategoria)
-            toast.success(`Categoría "${nuevaCategoria}" agregada con éxito.`)
+            const respuesta = await agregarCategoria(nuevaCategoria)
+            if (respuesta?.simulated) {
+                toast.info(`(Dry-Run) ${respuesta.message}`)
+            } else {
+                toast.success(`Categoría "${nuevaCategoria}" agregada con éxito.`)
+            }
             setNuevaCategoria("")
         } catch (error) {
             toast.error(`Error al agregar categoría: ${error.message}`)
@@ -34,13 +38,17 @@ function GestionCategorias() {
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
             confirmButtonText: "Sí, ¡eliminar!",
-            cancelButtonText: "Cancelar"
+            cancelButtonText: "Cancelar",
         })
 
         if (result.isConfirmed) {
             try {
-                await eliminarCategoria(categoria)
-                toast.success(`Categoría "${categoria}" eliminada.`)
+                const respuesta = await eliminarCategoria(categoria)
+                if (respuesta?.simulated) {
+                    toast.info(`(Dry-Run) ${respuesta.message}`)
+                } else {
+                    toast.success(`Categoría "${categoria}" eliminada.`)
+                }
             } catch (error) {
                 toast.error(`Error al eliminar: ${error.message}`)
             }
@@ -55,9 +63,7 @@ function GestionCategorias() {
                     <Row className="align-items-end">
                         <Col>
                             <Form.Group controlId="formNuevaCategoria">
-                                <Form.Label className="gestion-categorias-label">
-                                    Nueva Categoría
-                                </Form.Label>
+                                <Form.Label className="gestion-categorias-label">Nueva Categoría</Form.Label>
                                 <Form.Control
                                     className="gestion-categorias-input"
                                     type="text"
@@ -80,14 +86,9 @@ function GestionCategorias() {
                         {categorias
                             .filter((cat) => cat !== "Todas")
                             .map((cat) => (
-                                <ListGroup.Item
-                                    key={cat}
-                                    className="d-flex justify-content-between align-items-center">
+                                <ListGroup.Item key={cat} className="d-flex justify-content-between align-items-center">
                                     {cat}
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => handleEliminar(cat)}>
+                                    <Button variant="outline-danger" size="sm" onClick={() => handleEliminar(cat)}>
                                         <BsTrash />
                                     </Button>
                                 </ListGroup.Item>
