@@ -26,26 +26,33 @@ const LayeredVideo = styled.video`
 `
 
 export default function Admin() {
-    const { user } = useAuthContext()
+    const { admin } = useAuthContext()
 
-    if (!user) {
+    if (!admin) {
         return <Navigate to="/" replace />
     }
 
     const cloudName = "dy5u2krtv"
     const transformations = "q_auto,f_auto"
 
-    const videoKnightUrl = `https://res.cloudinary.com/${cloudName}/video/upload/${transformations}/knightcodeezgifcomgiftomp4converter_fjycc8`
-    const videoMatrixUrl = `https://res.cloudinary.com/${cloudName}/video/upload/${transformations}/Digital_rain_animation_small_letters_clear_wikiezgifcomgiftomp4converter_xk6wsw`
+    const videoKnightUrl = `https://res.cloudinary.com/${cloudName}/video/upload/${transformations}/knightcodeezgifcomgiftomp4converter_fjycc8.mp4`
+    const videoMatrixUrl = `https://res.cloudinary.com/${cloudName}/video/upload/${transformations}/Digital_rain_animation_small_letters_clear_wikiezgifcomgiftomp4converter_xk6wsw.mp4`
 
     return (
-        <AdminContainer>
-            <LayeredVideo zIndex={1} autoPlay loop muted playsInline>
-                <source src={videoKnightUrl} />
-            </LayeredVideo>
-            <LayeredVideo zIndex={2} opacity={0.6} autoPlay loop muted playsInline>
-                <source src={videoMatrixUrl} />
-            </LayeredVideo>
-        </AdminContainer>
+        <>
+            <title>Panel de Administración - Crisol</title>
+            <meta
+                name="description"
+                content="Panel de control para administradores. Gestioná productos, categorías y más."
+            />
+            <AdminContainer>
+                <LayeredVideo zIndex={1} autoPlay loop muted playsInline>
+                    <source src={videoKnightUrl} />
+                </LayeredVideo>
+                <LayeredVideo zIndex={2} opacity={0.6} autoPlay loop muted playsInline>
+                    <source src={videoMatrixUrl} />
+                </LayeredVideo>
+            </AdminContainer>
+        </>
     )
 }

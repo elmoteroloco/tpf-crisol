@@ -1,50 +1,44 @@
 import React, { createContext, useState, useContext, useEffect } from "react"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "../firebase/firebase"
 import { CarritoContext } from "./CarritoContext"
 
 const AuthContext = createContext()
+
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [admin, setAdmin] = useState(false)
     const [authLoading, setAuthLoading] = useState(true)
-
     const { vaciarCarrito } = useContext(CarritoContext)
 
     useEffect(() => {
-        const storedToken = sessionStorage.getItem("authToken")
-        const storedUser = sessionStorage.getItem("authUser")
-        if (storedToken && storedUser) {
-            setUser(storedUser)
-            if (storedUser === "6R1%64@gmail.com") {
-                setAdmin(true)
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            if (firebaseUser) {
+                const idTokenResult = await firebaseUser.getIdTokenResult()
+                setUser(firebaseUser)
+                setAdmin(idTokenResult.claims.admin === true)
             } else {
+                setUser(null)
                 setAdmin(false)
             }
-        }
-        setAuthLoading(false)
+            setAuthLoading(false)
+        })
+
+        return () => unsubscribe()
     }, [])
 
-    const login = (username) => {
-        const token = `fake-token-${username}`
-        if (username === "6R1%64@gmail.com") {
-            setAdmin(true)
-        } else {
+    const logout = async () => {
+        try {
+            await auth.signOut()
+            setUser(null)
             setAdmin(false)
+            vaciarCarrito()
+        } catch (error) {
+            console.error("Error al cerrar sesión:", error)
         }
-        sessionStorage.setItem("authToken", token)
-        sessionStorage.setItem("authUser", username)
-        setUser(username)
     }
-    const logout = () => {
-        sessionStorage.removeItem("authToken")
-        sessionStorage.removeItem("authUser")
-        setUser(null)
-        setAdmin(false)
-        vaciarCarrito()
-    }
-    return (
-        <AuthContext.Provider value={{ user, login, logout, admin, authLoading }}>
-            {children}
-        </AuthContext.Provider>
-    )
+
+    return <AuthContext.Provider value={{ user, admin, authLoading, logout }}>{children}</AuthContext.Provider>
 }
+
 export const useAuthContext = () => useContext(AuthContext)

@@ -4,11 +4,9 @@ import { crearUsuario, iniciarSesion, iniciarSesionConGoogle } from "../firebase
 import { dispararSweetBasico } from "../utils/SweetAlert"
 import { Modal, Button, Form } from "react-bootstrap"
 import { FcGoogle } from "react-icons/fc"
-import { useAuthContext } from "../contexts/AuthContext"
 import "./LoginModal.css"
 
 function LoginModal({ show, onHide }) {
-    const { login } = useAuthContext()
     const location = useLocation()
     const [usuario, setUsuario] = useState("")
     const [password, setPassword] = useState("")
@@ -17,8 +15,7 @@ function LoginModal({ show, onHide }) {
     const handleLogin = async (e) => {
         e.preventDefault()
         iniciarSesion(usuario, password)
-            .then(() => {
-                login(usuario)
+            .then((userCredential) => {
                 dispararSweetBasico("Inicio exitoso", "", "success", "Confirmar")
                 onHide()
             })
@@ -35,7 +32,6 @@ function LoginModal({ show, onHide }) {
         e.preventDefault()
         crearUsuario(usuario, password)
             .then(() => {
-                login(usuario)
                 dispararSweetBasico("Registro exitoso", "Ya podés comprar.", "success", "Confirmar")
                 onHide()
             })
@@ -45,15 +41,10 @@ function LoginModal({ show, onHide }) {
                         "Contraseña débil",
                         "La contraseña debe tener al menos 6 caracteres",
                         "error",
-                        "Cerrar"
+                        "Cerrar",
                     )
                 } else if (error.code === "auth/email-already-in-use") {
-                    dispararSweetBasico(
-                        "Email en uso",
-                        "El email ingresado ya está registrado.",
-                        "error",
-                        "Cerrar"
-                    )
+                    dispararSweetBasico("Email en uso", "El email ingresado ya está registrado.", "error", "Cerrar")
                 } else {
                     dispararSweetBasico("Error", "Ocurrió un error inesperado.", "error", "Cerrar")
                 }
@@ -63,18 +54,12 @@ function LoginModal({ show, onHide }) {
     const handleGoogleLogin = () => {
         iniciarSesionConGoogle()
             .then((userCredential) => {
-                login(userCredential.email)
                 dispararSweetBasico("Inicio exitoso con Google", "", "success", "Confirmar")
                 onHide()
             })
             .catch((error) => {
                 console.error("Error al iniciar sesión con Google:", error)
-                dispararSweetBasico(
-                    "Error con Google",
-                    "No se pudo iniciar sesión con Google.",
-                    "error",
-                    "Cerrar"
-                )
+                dispararSweetBasico("Error con Google", "No se pudo iniciar sesión con Google.", "error", "Cerrar")
             })
     }
 
@@ -93,12 +78,7 @@ function LoginModal({ show, onHide }) {
     }, [location, onHide])
 
     return (
-        <Modal
-            show={show}
-            onHide={onHide}
-            onExited={handleExited}
-            centered
-            className="login-modal-custom">
+        <Modal show={show} onHide={onHide} onExited={handleExited} centered className="login-modal-custom">
             <Modal.Header closeButton closeVariant="white">
                 <Modal.Title>{isLoginView ? "Ingresá" : "Creá tu cuenta"}</Modal.Title>
             </Modal.Header>
@@ -133,7 +113,8 @@ function LoginModal({ show, onHide }) {
                         <Button
                             variant="outline-primary"
                             className="w-100 d-flex align-items-center justify-content-center"
-                            onClick={handleGoogleLogin}>
+                            onClick={handleGoogleLogin}
+                        >
                             <FcGoogle className="me-2" />
                             seguí con tu cuenta Google
                         </Button>
@@ -168,7 +149,8 @@ function LoginModal({ show, onHide }) {
                         <Button
                             variant="outline-secondary"
                             className="w-100 d-flex align-items-center justify-content-center"
-                            onClick={handleGoogleLogin}>
+                            onClick={handleGoogleLogin}
+                        >
                             <FcGoogle className="me-2" />
                             seguí con tu cuenta Google
                         </Button>

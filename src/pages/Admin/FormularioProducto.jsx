@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import { useAuthContext } from "../../contexts/AuthContext"
 import { useProductosContext } from "../../contexts/ProductosContext"
 import { Form, Button, Container, Card, Dropdown } from "react-bootstrap"
@@ -9,13 +9,14 @@ import "./FormularioProducto.css"
 function FormularioProducto() {
     const { admin } = useAuthContext()
     const { agregarProducto, categorias } = useProductosContext()
+    const navigate = useNavigate()
 
     const [producto, setProducto] = useState({
         nombre: "",
         precio: "",
         descripcion: "",
         imagen: "",
-        categoria: ""
+        categoria: "",
     })
 
     const validarFormulario = () => {
@@ -25,17 +26,16 @@ function FormularioProducto() {
         if (!producto.categoria) {
             return "Debes seleccionar una categoría."
         }
-        if (!producto.precio || producto.precio <= 0) {
-            return "El precio debe ser mayor a 0."
+        if (!producto.precio || isNaN(Number(producto.precio)) || Number(producto.precio) <= 0) {
+            return "El precio debe ser un número mayor a 0."
         }
         if (!producto.descripcion.trim() || producto.descripcion.length < 10) {
             return "La descripción debe tener al menos 10 caracteres."
         }
         if (!producto.imagen.trim()) {
-            return "La url de la imagen no debe estar vacía"
-        } else {
-            return true
+            return "La URL de la imagen no debe estar vacía."
         }
+        return true
     }
 
     const handleChange = (e) => {
@@ -47,31 +47,30 @@ function FormularioProducto() {
         setProducto({ ...producto, categoria: eventKey })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        const validarForm = validarFormulario()
-        if (validarForm === true) {
-            agregarProducto(producto)
-                .then((data) => {
-                    toast.success("Artículo agregado con éxito")
-                    setProducto({
-                        nombre: "",
-                        precio: "",
-                        descripcion: "",
-                        imagen: "",
-                        categoria: ""
-                    })
-                })
-                .catch((error) => {
-                    toast.error(`Error: ${error.message || "Error desconocido"}`)
-                })
-        } else {
-            toast.error(validarForm)
+        const validacion = validarFormulario()
+        if (validacion !== true) {
+            toast.error(validacion)
+            return
+        }
+
+        const productoParaEnviar = {
+            ...producto,
+            precio: Number(producto.precio),
+        }
+
+        try {
+            const nuevoProducto = await agregarProducto(productoParaEnviar)
+            toast.success(`Artículo "${nuevoProducto.nombre}" agregado con éxito`)
+            navigate(`/productos/${nuevoProducto.id}`)
+        } catch (error) {
+            toast.error(`Error: ${error.message || "No se pudo agregar el artículo"}`)
         }
     }
 
     if (!admin) {
-        return <Navigate to="/login" replace />
+        return <Navigate to="/" replace />
     }
 
     return (
@@ -98,7 +97,8 @@ function FormularioProducto() {
                             <Dropdown.Toggle
                                 className="dropdown-add-toggle w-100"
                                 variant="secondary"
-                                id="dropdown-categoria-agregar">
+                                id="dropdown-categoria-agregar"
+                            >
                                 {producto.categoria || "Selecciona una categoría"}
                             </Dropdown.Toggle>
 
@@ -156,7 +156,7 @@ function FormularioProducto() {
                     </Form.Group>
 
                     <Button type="submit" className="w-100 mt-3 form-add-button">
-                        Actualizar dB
+                        Agregar a la DB
                     </Button>
                 </Form>
             </Card>

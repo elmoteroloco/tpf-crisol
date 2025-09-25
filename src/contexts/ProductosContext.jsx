@@ -1,14 +1,8 @@
 import React, { createContext, useState, useContext, useEffect } from "react"
-import {
-    obtenerProductosFirebase,
-    obtenerProductoPorIdFirebase,
-    agregarProductoFirebase,
-    actualizarProductoFirebase,
-    eliminarProductoFirebase,
-    obtenerCategoriasFirebase,
-    agregarCategoriaFirebase,
-    eliminarCategoriaFirebase
-} from "../firebase/firebase"
+import { obtenerProductosFirebase, obtenerProductoPorIdFirebase, obtenerCategoriasFirebase } from "../firebase/firebase"
+import { useAuthContext } from "./AuthContext"
+
+const API_BASE_URL = "http://localhost:3000"
 
 const ProductosContext = createContext()
 
@@ -21,6 +15,7 @@ export function ProductosProvider({ children }) {
     const [categorias, setCategorias] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState(null)
+    const { user } = useAuthContext()
 
     function obtenerProductos() {
         return new Promise((res, rej) => {
@@ -52,19 +47,28 @@ export function ProductosProvider({ children }) {
             })
     }, [])
 
-    const agregarProducto = (producto) => {
-        return new Promise((res, rej) => {
-            agregarProductoFirebase(producto)
-                .then((nuevoProducto) => {
-                    setProductosOriginales((prev) => [...prev, nuevoProducto])
-                    setProductos((prev) => [...prev, nuevoProducto])
-                    res(nuevoProducto)
-                })
-                .catch((error) => {
-                    console.error("Error en contexto al agregar producto:", error)
-                    rej(error)
-                })
+    const agregarProducto = async (producto) => {
+        if (!user) throw new Error("Usuario no autenticado.")
+        const idToken = await user.getIdToken()
+
+        const response = await fetch(`${API_BASE_URL}/products`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify(producto),
         })
+
+        if (!response.ok) {
+            const errorData = await response.text()
+            throw new Error(errorData || "Error al agregar producto en el backend.")
+        }
+
+        const nuevoProducto = await response.json()
+        setProductosOriginales((prev) => [...prev, nuevoProducto])
+        setProductos((prev) => [...prev, nuevoProducto])
+        return nuevoProducto
     }
 
     function obtenerProducto(id) {
@@ -87,79 +91,110 @@ export function ProductosProvider({ children }) {
         })
     }
 
-    const actualizarProducto = (id, productoActualizado) => {
-        return new Promise((res, rej) => {
-            actualizarProductoFirebase(id, productoActualizado)
-                .then((productoConId) => {
-                    setProductosOriginales((prev) =>
-                        prev.map((p) => (p.id === id ? productoConId : p))
-                    )
-                    setProductos((prev) => prev.map((p) => (p.id === id ? productoConId : p)))
-                    if (productoEncontrado && productoEncontrado.id === id) {
-                        setProductoEncontrado(productoConId)
-                    }
-                    res(productoConId)
-                })
-                .catch((error) => {
-                    console.error("Error en contexto al actualizar producto:", error)
-                    rej(error)
-                })
+    const actualizarProducto = async (id, productoActualizado) => {
+        if (!user) throw new Error("Usuario no autenticado.")
+        const idToken = await user.getIdToken()
+
+        const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify(productoActualizado),
         })
+
+        if (!response.ok) {
+            const errorData = await response.text()
+            throw new Error(errorData || "Error al actualizar producto en el backend.")
+        }
+
+        const productoConId = await response.json()
+        setProductosOriginales((prev) => prev.map((p) => (p.id === id ? productoConId : p)))
+        setProductos((prev) => prev.map((p) => (p.id === id ? productoConId : p)))
+        if (productoEncontrado && productoEncontrado.id === id) {
+            setProductoEncontrado(productoConId)
+        }
+        return productoConId
     }
 
-    const eliminarProducto = (id) => {
-        return new Promise((res, rej) => {
-            eliminarProductoFirebase(id)
-                .then((respuesta) => {
-                    setProductosOriginales((prev) => prev.filter((p) => p.id !== id))
-                    setProductos((prev) => prev.filter((p) => p.id !== id))
-                    if (productoEncontrado && productoEncontrado.id === id) {
-                        setProductoEncontrado(null)
-                    }
-                    res(respuesta)
-                })
-                .catch((error) => {
-                    console.error("Error en contexto al eliminar producto:", error)
-                    rej(error)
-                })
+    const eliminarProducto = async (id) => {
+        if (!user) throw new Error("Usuario no autenticado.")
+        const idToken = await user.getIdToken()
+
+        const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${idToken}`,
+            },
         })
-    }
-    const agregarCategoria = (nombreCategoria) => {
-        return new Promise((res, rej) => {
-            agregarCategoriaFirebase(nombreCategoria)
-                .then(() => obtenerCategoriasFirebase())
-                .then((categoriasData) => {
-                    setCategorias(["Todas", ...categoriasData])
-                    res()
-                })
-                .catch(rej)
-        })
+
+        if (!response.ok) {
+            const errorData = await response.text()
+            throw new Error(errorData || "Error al eliminar producto en el backend.")
+        }
+
+        const respuesta = await response.text()
+        setProductosOriginales((prev) => prev.filter((p) => p.id !== id))
+        setProductos((prev) => prev.filter((p) => p.id !== id))
+        if (productoEncontrado && productoEncontrado.id === id) {
+            setProductoEncontrado(null)
+        }
+        return respuesta
     }
 
-    const eliminarCategoria = (nombreCategoria) => {
-        return new Promise((res, rej) => {
-            eliminarCategoriaFirebase(nombreCategoria)
-                .then(() => obtenerCategoriasFirebase())
-                .then((categoriasData) => {
-                    setCategorias(["Todas", ...categoriasData])
-                    res()
-                })
-                .catch(rej)
+    const agregarCategoria = async (nombreCategoria) => {
+        if (!user) throw new Error("Usuario no autenticado.")
+        const idToken = await user.getIdToken()
+
+        const response = await fetch(`${API_BASE_URL}/categories`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${idToken}`,
+            },
+            body: JSON.stringify({ nombre: nombreCategoria }),
         })
+
+        if (!response.ok) {
+            const errorData = await response.text()
+            throw new Error(errorData || "Error al agregar categoría en el backend.")
+        }
+
+        const categoriasData = await obtenerCategoriasFirebase()
+        setCategorias(["Todas", ...categoriasData])
+    }
+
+    const eliminarCategoria = async (nombreCategoria) => {
+        if (!user) throw new Error("Usuario no autenticado.")
+        const idToken = await user.getIdToken()
+
+        const response = await fetch(`${API_BASE_URL}/categories/${encodeURIComponent(nombreCategoria)}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${idToken}`,
+            },
+        })
+
+        if (!response.ok) {
+            const errorData = await response.text()
+            throw new Error(errorData || "Error al eliminar categoría en el backend.")
+        }
+
+        const categoriasData = await obtenerCategoriasFirebase()
+        setCategorias(["Todas", ...categoriasData])
     }
 
     useEffect(() => {
         let productosFiltrados = [...productosOriginales]
 
         if (categoriaSeleccionada && categoriaSeleccionada !== "Todas") {
-            productosFiltrados = productosFiltrados.filter(
-                (p) => p.categoria === categoriaSeleccionada
-            )
+            productosFiltrados = productosFiltrados.filter((p) => p.categoria === categoriaSeleccionada)
         }
 
         if (terminoBusqueda && terminoBusqueda.trim() !== "") {
             productosFiltrados = productosFiltrados.filter((p) =>
-                p.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase())
+                p.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase()),
             )
         }
 
@@ -188,8 +223,9 @@ export function ProductosProvider({ children }) {
                 agregarCategoria,
                 eliminarCategoria,
                 filtrarPorCategoria,
-                buscarPorNombre
-            }}>
+                buscarPorNombre,
+            }}
+        >
             {children}
         </ProductosContext.Provider>
     )
