@@ -85,7 +85,14 @@ function LoginModal() {
     }, [location, closeLoginModal])
 
     return (
-        <StyledModal show={showLoginModal} onHide={closeLoginModal} onExited={handleExited} centered $zIndex={1055}>
+        <StyledModal
+            show={showLoginModal}
+            onHide={closeLoginModal}
+            onExited={handleExited}
+            centered
+            $zIndex={1055}
+            className="login-modal-custom"
+        >
             <Modal.Header closeButton>
                 <Modal.Title>{isLoginView ? "Ingresá" : "Creá tu cuenta"}</Modal.Title>
             </Modal.Header>
