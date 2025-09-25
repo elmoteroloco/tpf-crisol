@@ -1,12 +1,19 @@
 import { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import { crearUsuario, iniciarSesion, iniciarSesionConGoogle } from "../firebase/firebase"
+import { useModalContext } from "../contexts/ModalContext"
 import { dispararSweetBasico } from "../utils/SweetAlert"
 import { Modal, Button, Form } from "react-bootstrap"
+import styled from "styled-components"
 import { FcGoogle } from "react-icons/fc"
 import "./LoginModal.css"
 
-function LoginModal({ show, onHide }) {
+const StyledModal = styled(Modal)`
+    z-index: ${(props) => props.$zIndex};
+`
+
+function LoginModal() {
+    const { showLoginModal, closeLoginModal } = useModalContext()
     const location = useLocation()
     const [usuario, setUsuario] = useState("")
     const [password, setPassword] = useState("")
@@ -16,11 +23,11 @@ function LoginModal({ show, onHide }) {
         e.preventDefault()
         iniciarSesion(usuario, password)
             .then((userCredential) => {
-                dispararSweetBasico("Inicio exitoso", "", "success", "Confirmar")
-                onHide()
+                dispararSweetBasico("¡Bienvenido de vuelta!", "", "success", "Confirmar")
+                closeLoginModal()
             })
             .catch((error) => {
-                if (error.code === "auth/invalid-credential") {
+                if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password") {
                     dispararSweetBasico("Credenciales incorrectas", "", "error", "Cerrar")
                 } else {
                     dispararSweetBasico("Error", "Ocurrió un error inesperado.", "error", "Cerrar")
@@ -33,7 +40,7 @@ function LoginModal({ show, onHide }) {
         crearUsuario(usuario, password)
             .then(() => {
                 dispararSweetBasico("Registro exitoso", "Ya podés comprar.", "success", "Confirmar")
-                onHide()
+                closeLoginModal()
             })
             .catch((error) => {
                 if (error.code === "auth/weak-password") {
@@ -54,8 +61,8 @@ function LoginModal({ show, onHide }) {
     const handleGoogleLogin = () => {
         iniciarSesionConGoogle()
             .then((userCredential) => {
-                dispararSweetBasico("Inicio exitoso con Google", "", "success", "Confirmar")
-                onHide()
+                dispararSweetBasico("¡Bienvenido con Google!", "", "success", "Confirmar")
+                closeLoginModal()
             })
             .catch((error) => {
                 console.error("Error al iniciar sesión con Google:", error)
@@ -72,14 +79,14 @@ function LoginModal({ show, onHide }) {
     }
 
     useEffect(() => {
-        if (show) {
-            onHide()
+        if (showLoginModal) {
+            closeLoginModal()
         }
-    }, [location, onHide])
+    }, [location, closeLoginModal])
 
     return (
-        <Modal show={show} onHide={onHide} onExited={handleExited} centered className="login-modal-custom">
-            <Modal.Header closeButton closeVariant="white">
+        <StyledModal show={showLoginModal} onHide={closeLoginModal} onExited={handleExited} centered $zIndex={1055}>
+            <Modal.Header closeButton>
                 <Modal.Title>{isLoginView ? "Ingresá" : "Creá tu cuenta"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -157,7 +164,7 @@ function LoginModal({ show, onHide }) {
                     </Form>
                 )}
             </Modal.Body>
-        </Modal>
+        </StyledModal>
     )
 }
 

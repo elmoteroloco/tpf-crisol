@@ -32,7 +32,7 @@ function Contacto() {
                                 <Card.Body>
                                     <h2 className="text-center mb-4">¡Conectanos!</h2>
                                     <Form onSubmit={handleSubmit}>
-                                        {user && <input type="hidden" name="usuario_logueado" value={user} />}
+                                        {user && <input type="hidden" name="usuario_logueado" value={user.email} />}
                                         <Form.Group className="mb-3" controlId="nombre">
                                             <Form.Control type="text" name="nombre" placeholder="tu nombre" required />
                                         </Form.Group>
@@ -42,8 +42,8 @@ function Contacto() {
                                                 type="email"
                                                 name="email"
                                                 placeholder="tu e-mail"
-                                                defaultValue={user || ""}
-                                                readOnly={!!user}
+                                                defaultValue={user ? user.email : ""}
+                                                readOnly={Boolean(user)}
                                                 required
                                             />
                                             <ValidationError
