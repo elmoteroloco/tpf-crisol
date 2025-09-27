@@ -2,7 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from "react"
 import { obtenerProductosFirebase, obtenerProductoPorIdFirebase, obtenerCategoriasFirebase } from "../firebase/firebase"
 import { useAuthContext } from "./AuthContext"
 
-const API_BASE_URL = "http://localhost:3000"
+const API_BASE_URL = "https://node-crisol.onrender.com"
 
 const ProductosContext = createContext()
 
