@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react"
-import { obtenerProductosFirebase, obtenerProductoPorIdFirebase, obtenerCategoriasFirebase } from "../firebase/firebase"
+import { obtenerProductoPorIdFirebase } from "../firebase/firebase"
 import { useAuthContext } from "./AuthContext"
 
 const API_BASE_URL = "https://node-crisol.onrender.com"
@@ -19,17 +19,22 @@ export function ProductosProvider({ children }) {
 
     function obtenerProductos() {
         return new Promise((res, rej) => {
-            const promesas = [obtenerProductosFirebase(), obtenerCategoriasFirebase()]
+            const promesas = [
+                fetch(`${API_BASE_URL}/products`).then((response) => response.json()),
+                fetch(`${API_BASE_URL}/categories`).then((response) => response.json()),
+            ]
 
             Promise.all(promesas)
                 .then(([productosData, categoriasData]) => {
                     setProductos(productosData)
                     setProductosOriginales(productosData)
                     setCategorias(["Todas", ...categoriasData])
-                    res({ productos: productosData, categorias: categoriasData })
+                    res({ productos: productosData, categorias: ["Todas", ...categoriasData] })
                 })
                 .catch((error) => {
                     console.error("Error en contexto al obtener productos:", error)
+                    // Agregamos un mensaje de error más específico para el usuario
+                    setError("No se pudo conectar con el servidor para cargar los datos.")
                     rej(error)
                 })
         })
@@ -173,7 +178,8 @@ export function ProductosProvider({ children }) {
         }
 
         if (!respuestaApi.simulated) {
-            const categoriasData = await obtenerCategoriasFirebase()
+            const response = await fetch(`${API_BASE_URL}/categories`)
+            const categoriasData = await response.json()
             setCategorias(["Todas", ...categoriasData])
         }
 
@@ -198,7 +204,8 @@ export function ProductosProvider({ children }) {
         }
 
         if (!respuestaApi.simulated) {
-            const categoriasData = await obtenerCategoriasFirebase()
+            const response = await fetch(`${API_BASE_URL}/categories`)
+            const categoriasData = await response.json()
             setCategorias(["Todas", ...categoriasData])
         }
 
