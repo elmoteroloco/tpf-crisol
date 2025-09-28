@@ -1,260 +1,193 @@
 import React, { createContext, useState, useContext, useEffect } from "react"
-import { obtenerProductoPorIdFirebase } from "../firebase/firebase"
+import { toast } from "react-toastify"
 import { useAuthContext } from "./AuthContext"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-const ProductosContext = createContext()
+export const ProductosContext = createContext()
 
-export function ProductosProvider({ children }) {
+export const useProductosContext = () => useContext(ProductosContext)
+
+export const ProductosProvider = ({ children }) => {
+    const { user } = useAuthContext()
     const [productos, setProductos] = useState([])
     const [productosOriginales, setProductosOriginales] = useState([])
-    const [productoEncontrado, setProductoEncontrado] = useState(null)
-    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas")
-    const [terminoBusqueda, setTerminoBusqueda] = useState("")
     const [categorias, setCategorias] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState(null)
-    const { user } = useAuthContext()
+    const [productoEncontrado, setProductoEncontrado] = useState(null)
 
-    function obtenerProductos() {
-        return new Promise((res, rej) => {
-            const promesas = [
-                fetch(`${API_BASE_URL}/products`).then((response) => response.json()),
-                fetch(`${API_BASE_URL}/categories`).then((response) => response.json()),
-            ]
+    const [categoriaFiltro, setCategoriaFiltro] = useState("Todas")
+    const [busquedaFiltro, setBusquedaFiltro] = useState("")
 
-            Promise.all(promesas)
-                .then(([productosData, categoriasData]) => {
-                    setProductos(productosData)
-                    setProductosOriginales(productosData)
-                    setCategorias(["Todas", ...categoriasData])
-                    res({ productos: productosData, categorias: ["Todas", ...categoriasData] })
-                })
-                .catch((error) => {
-                    console.error("Error en contexto al obtener productos:", error)
-                    // Agregamos un mensaje de error más específico para el usuario
-                    setError("No se pudo conectar con el servidor para cargar los datos.")
-                    rej(error)
-                })
-        })
+    const fetchDatos = async () => {
+        setCargando(true)
+        setError(null)
+        try {
+            const [resProductos, resCategorias] = await Promise.all([
+                fetch(`${API_BASE_URL}/products`),
+                fetch(`${API_BASE_URL}/categories`),
+            ])
+
+            if (!resProductos.ok || !resCategorias.ok) {
+                throw new Error("Error al conectar con el servidor.")
+            }
+
+            const dataProductos = await resProductos.json()
+            const dataCategorias = await resCategorias.json()
+
+            setProductosOriginales(dataProductos)
+            setCategorias(["Todas", ...dataCategorias])
+        } catch (err) {
+            console.error("Error al cargar datos iniciales:", err)
+            setError("No se pudieron cargar los datos. Por favor, intentá de nuevo más tarde.")
+        } finally {
+            setCargando(false)
+        }
     }
 
     useEffect(() => {
-        setCargando(true)
-        obtenerProductos()
-            .catch((err) => {
-                setError("No se pudieron cargar los datos iniciales.")
-                console.error(err)
-            })
-            .finally(() => {
-                setCargando(false)
-            })
+        fetchDatos()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    const agregarProducto = async (producto) => {
-        if (!user) throw new Error("Usuario no autenticado.")
-        const idToken = await user.getIdToken()
-
-        const response = await fetch(`${API_BASE_URL}/products`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${idToken}`,
-            },
-            body: JSON.stringify(producto),
-        })
-
-        const respuestaApi = await response.json()
-
-        if (!response.ok) {
-            throw new Error(respuestaApi.message || "Error al agregar producto en el backend.")
-        }
-
-        if (!respuestaApi.simulated) {
-            setProductosOriginales((prev) => [...prev, respuestaApi])
-            setProductos((prev) => [...prev, respuestaApi])
-        }
-
-        return respuestaApi
-    }
-
-    function obtenerProducto(id) {
-        return new Promise((res, rej) => {
-            const productoEnEstado = productos.find((p) => p.id === id)
-            if (productoEnEstado) {
-                setProductoEncontrado(productoEnEstado)
-                return res(productoEnEstado)
-            }
-
-            obtenerProductoPorIdFirebase(id)
-                .then((data) => {
-                    setProductoEncontrado(data)
-                    res(data)
-                })
-                .catch((error) => {
-                    console.error("Error en contexto al obtener producto por ID:", error)
-                    rej(error)
-                })
-        })
-    }
-
-    const actualizarProducto = async (id, productoActualizado) => {
-        if (!user) throw new Error("Usuario no autenticado.")
-        const idToken = await user.getIdToken()
-
-        const response = await fetch(`${API_BASE_URL}/products/${id}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${idToken}`,
-            },
-            body: JSON.stringify(productoActualizado),
-        })
-
-        const respuestaApi = await response.json()
-
-        if (!response.ok) {
-            throw new Error(respuestaApi.message || "Error al actualizar producto en el backend.")
-        }
-
-        if (!respuestaApi.simulated) {
-            const productoFinal = { ...productoActualizado, id }
-            setProductosOriginales((prev) => prev.map((p) => (p.id === id ? productoFinal : p)))
-            setProductos((prev) => prev.map((p) => (p.id === id ? productoFinal : p)))
-            if (productoEncontrado && productoEncontrado.id === id) {
-                setProductoEncontrado(productoFinal)
-            }
-        }
-
-        return respuestaApi
-    }
-
-    const eliminarProducto = async (id) => {
-        if (!user) throw new Error("Usuario no autenticado.")
-        const idToken = await user.getIdToken()
-
-        const response = await fetch(`${API_BASE_URL}/products/${id}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${idToken}`,
-            },
-        })
-
-        const respuestaApi = await response.json()
-
-        if (!response.ok) {
-            throw new Error(respuestaApi.message || "Error al eliminar producto en el backend.")
-        }
-
-        if (!respuestaApi.simulated) {
-            setProductosOriginales((prev) => prev.filter((p) => p.id !== id))
-            setProductos((prev) => prev.filter((p) => p.id !== id))
-            if (productoEncontrado && productoEncontrado.id === id) {
-                setProductoEncontrado(null)
-            }
-        }
-
-        return respuestaApi
-    }
-
-    const agregarCategoria = async (nombreCategoria) => {
-        if (!user) throw new Error("Usuario no autenticado.")
-        const idToken = await user.getIdToken()
-
-        const response = await fetch(`${API_BASE_URL}/categories`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${idToken}`,
-            },
-            body: JSON.stringify({ nombre: nombreCategoria }),
-        })
-
-        const respuestaApi = await response.json()
-
-        if (!response.ok) {
-            throw new Error(respuestaApi.message || "Error al agregar categoría en el backend.")
-        }
-
-        if (!respuestaApi.simulated) {
-            const response = await fetch(`${API_BASE_URL}/categories`)
-            const categoriasData = await response.json()
-            setCategorias(["Todas", ...categoriasData])
-        }
-
-        return respuestaApi
-    }
-
-    const eliminarCategoria = async (nombreCategoria) => {
-        if (!user) throw new Error("Usuario no autenticado.")
-        const idToken = await user.getIdToken()
-
-        const response = await fetch(`${API_BASE_URL}/categories/${encodeURIComponent(nombreCategoria)}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${idToken}`,
-            },
-        })
-
-        const respuestaApi = await response.json()
-
-        if (!response.ok) {
-            throw new Error(respuestaApi.message || "Error al eliminar categoría en el backend.")
-        }
-
-        if (!respuestaApi.simulated) {
-            const response = await fetch(`${API_BASE_URL}/categories`)
-            const categoriasData = await response.json()
-            setCategorias(["Todas", ...categoriasData])
-        }
-
-        return respuestaApi
-    }
 
     useEffect(() => {
         let productosFiltrados = [...productosOriginales]
 
-        if (categoriaSeleccionada && categoriaSeleccionada !== "Todas") {
-            productosFiltrados = productosFiltrados.filter((p) => p.categoria === categoriaSeleccionada)
+        if (categoriaFiltro !== "Todas") {
+            productosFiltrados = productosFiltrados.filter((p) => p.categoria === categoriaFiltro)
         }
 
-        if (terminoBusqueda && terminoBusqueda.trim() !== "") {
+        if (busquedaFiltro) {
             productosFiltrados = productosFiltrados.filter((p) =>
-                p.nombre.toLowerCase().includes(terminoBusqueda.toLowerCase()),
+                p.nombre.toLowerCase().includes(busquedaFiltro.toLowerCase()),
             )
         }
 
         setProductos(productosFiltrados)
-    }, [productosOriginales, categoriaSeleccionada, terminoBusqueda])
+    }, [productosOriginales, categoriaFiltro, busquedaFiltro])
 
     const filtrarPorCategoria = (categoria) => {
-        setCategoriaSeleccionada(categoria)
+        setCategoriaFiltro(categoria)
     }
 
-    const buscarPorNombre = (termino) => setTerminoBusqueda(termino)
+    const buscarPorNombre = (termino) => {
+        setBusquedaFiltro(termino)
+    }
 
-    return (
-        <ProductosContext.Provider
-            value={{
-                obtenerProductos,
-                productos,
-                cargando,
-                error,
-                categorias,
-                agregarProducto,
-                obtenerProducto,
-                productoEncontrado,
-                actualizarProducto,
-                eliminarProducto,
-                agregarCategoria,
-                eliminarCategoria,
-                filtrarPorCategoria,
-                buscarPorNombre,
-            }}
-        >
-            {children}
-        </ProductosContext.Provider>
-    )
+    const obtenerProducto = async (id) => {
+        const producto = productosOriginales.find((p) => p.id === id)
+        if (producto) {
+            setProductoEncontrado(producto)
+            return producto
+        } else {
+            // Si no está en la lista, intentar buscarlo en la API (puede ser un producto nuevo)
+            try {
+                const res = await fetch(`${API_BASE_URL}/products`)
+                if (!res.ok) throw new Error("Producto no encontrado en el servidor.")
+                const allProducts = await res.json()
+                const foundProduct = allProducts.find((p) => p.id === id)
+                if (foundProduct) {
+                    setProductoEncontrado(foundProduct)
+                    return foundProduct
+                }
+                throw new Error("Producto no encontrado")
+            } catch (err) {
+                console.error("Error al obtener producto individual:", err)
+                setProductoEncontrado(null)
+                throw err
+            }
+        }
+    }
+
+    const getAuthHeaders = () => {
+        const token = user?.stsTokenManager?.accessToken
+        if (!token) {
+            toast.error("No estás autenticado.")
+            throw new Error("Token de autenticación no encontrado.")
+        }
+        return {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    }
+
+    const agregarProducto = async (nuevoProducto) => {
+        try {
+            const headers = getAuthHeaders()
+            const response = await fetch(`${API_BASE_URL}/products`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify(nuevoProducto),
+            })
+            const data = await response.json()
+            if (!response.ok) throw new Error(data.message || "Error al agregar el producto.")
+
+            if (!data.simulated) {
+                await fetchDatos() // Recargar todos los datos
+            }
+            return data
+        } catch (error) {
+            console.error("Error en agregarProducto:", error)
+            throw error
+        }
+    }
+
+    const actualizarProducto = async (id, productoActualizado) => {
+        try {
+            const headers = getAuthHeaders()
+            const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+                method: "PUT",
+                headers,
+                body: JSON.stringify(productoActualizado),
+            })
+            const data = await response.json()
+            if (!response.ok) throw new Error(data.message || "Error al actualizar el producto.")
+
+            if (!data.simulated) {
+                await fetchDatos()
+            }
+            return data
+        } catch (error) {
+            console.error("Error en actualizarProducto:", error)
+            throw error
+        }
+    }
+
+    const eliminarProducto = async (id) => {
+        try {
+            const headers = getAuthHeaders()
+            const response = await fetch(`${API_BASE_URL}/products/${id}`, {
+                method: "DELETE",
+                headers,
+            })
+            const data = await response.json()
+            if (!response.ok) throw new Error(data.message || "Error al eliminar el producto.")
+
+            if (!data.simulated) {
+                await fetchDatos()
+            }
+            return data
+        } catch (error) {
+            console.error("Error en eliminarProducto:", error)
+            throw error
+        }
+    }
+
+    const value = {
+        productos,
+        categorias,
+        cargando,
+        error,
+        productoEncontrado,
+        filtrarPorCategoria,
+        buscarPorNombre,
+        obtenerProducto,
+        agregarProducto,
+        actualizarProducto,
+        eliminarProducto,
+        fetchDatos,
+    }
+
+    return <ProductosContext.Provider value={value}>{children}</ProductosContext.Provider>
 }
-export const useProductosContext = () => useContext(ProductosContext)

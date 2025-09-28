@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from "react"
 import { useProductosContext } from "../../contexts/ProductosContext"
-import { Container, Table, Form, InputGroup, Button, Image, OverlayTrigger, Tooltip } from "react-bootstrap"
+import { Container, Table, Form, InputGroup, Button, Image, OverlayTrigger, Tooltip, Modal } from "react-bootstrap"
 import { Link } from "react-router-dom"
-import { BsPencilSquare, BsTrash } from "react-icons/bs"
+import { BsPencilSquare, BsTrash, BsArrowsFullscreen } from "react-icons/bs"
 import Paginacion from "../../components/Paginacion"
 import "./AdminProductos.css"
 
@@ -11,18 +11,14 @@ const PRODUCTOS_POR_PAGINA = 10
 function AdminProductos() {
     const { productos, categorias, filtrarPorCategoria, buscarPorNombre } = useProductosContext()
     const [paginaActual, setPaginaActual] = useState(1)
+    const [showImageModal, setShowImageModal] = useState(false)
+    const [selectedImage, setSelectedImage] = useState(null)
 
-    const totalPaginas = Math.ceil(productos.length / PRODUCTOS_POR_PAGINA)
-
-    const productosPaginados = useMemo(() => {
-        const primerIndice = (paginaActual - 1) * PRODUCTOS_POR_PAGINA
-        const ultimoIndice = primerIndice + PRODUCTOS_POR_PAGINA
-        return productos.slice(primerIndice, ultimoIndice)
-    }, [productos, paginaActual])
-
-    const handleCambioPagina = (numeroPagina) => {
-        setPaginaActual(numeroPagina)
+    const handleShowImage = (imageUrl) => {
+        setSelectedImage(imageUrl)
+        setShowImageModal(true)
     }
+    const handleCloseImage = () => setShowImageModal(false)
 
     const handleFiltroCategoria = (e) => {
         filtrarPorCategoria(e.target.value)
@@ -34,11 +30,21 @@ function AdminProductos() {
         setPaginaActual(1)
     }
 
+    const productosPaginados = useMemo(() => {
+        const primerIndice = (paginaActual - 1) * PRODUCTOS_POR_PAGINA
+        const ultimoIndice = primerIndice + PRODUCTOS_POR_PAGINA
+        return productos.slice(primerIndice, ultimoIndice)
+    }, [productos, paginaActual])
+
+    const handleCambioPagina = (numeroPagina) => {
+        setPaginaActual(numeroPagina)
+    }
+
     return (
         <>
             <title>Gestionar Productos - Crisol</title>
             <Container className="my-5">
-                <h2 className="text-center mb-4">Gestión de Productos</h2>
+                <h2 className="text-center mb-4 admin-title">Gestión de Productos</h2>
 
                 <div className="filtros-admin-container mb-4">
                     <InputGroup>
@@ -47,13 +53,13 @@ function AdminProductos() {
                     <Form.Select aria-label="Filtrar por categoría" onChange={handleFiltroCategoria}>
                         {categorias.map((cat) => (
                             <option key={cat} value={cat}>
-                                {cat}
+                                {cat === "Todas" ? "Todas las Categorías" : cat}
                             </option>
                         ))}
                     </Form.Select>
                 </div>
 
-                <Table striped bordered hover responsive className="admin-productos-table shadow-sm">
+                <Table bordered hover responsive variant="dark" className="admin-productos-table shadow-sm">
                     <thead>
                         <tr>
                             <th>Imagen</th>
@@ -69,11 +75,17 @@ function AdminProductos() {
                             productosPaginados.map((producto) => (
                                 <tr key={producto.id}>
                                     <td className="text-center align-middle">
-                                        <Image
-                                            src={producto.imagen}
-                                            alt={producto.nombre}
-                                            className="thumbnail-admin"
-                                        />
+                                        <div
+                                            className="thumbnail-admin-container"
+                                            onClick={() => handleShowImage(producto.imagen)}
+                                        >
+                                            <Image
+                                                src={producto.imagen}
+                                                alt={producto.nombre}
+                                                className="thumbnail-admin"
+                                            />
+                                            <BsArrowsFullscreen className="thumbnail-zoom-icon" />
+                                        </div>
                                     </td>
                                     <td className="align-middle">{producto.nombre}</td>
                                     <td className="align-middle">{producto.categoria}</td>
@@ -121,14 +133,24 @@ function AdminProductos() {
                     </tbody>
                 </Table>
 
-                {totalPaginas > 1 && (
+                {productos.length > 0 && (
                     <Paginacion
-                        paginaActual={paginaActual}
-                        totalPaginas={totalPaginas}
-                        enCambioDePagina={handleCambioPagina}
+                        itemsPerPage={PRODUCTOS_POR_PAGINA}
+                        totalItems={productos.length}
+                        paginate={handleCambioPagina}
+                        currentPage={paginaActual}
                     />
                 )}
             </Container>
+
+            <Modal show={showImageModal} onHide={handleCloseImage} centered size="lg" className="image-modal">
+                <Modal.Header closeButton>
+                    <Modal.Title>Vista Previa de Imagen</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="text-center">
+                    <Image src={selectedImage} fluid />
+                </Modal.Body>
+            </Modal>
         </>
     )
 }
