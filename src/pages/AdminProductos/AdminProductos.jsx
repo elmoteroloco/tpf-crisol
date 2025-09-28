@@ -4,12 +4,14 @@ import { Container, Table, Form, InputGroup, Button, Image, OverlayTrigger, Tool
 import { Link } from "react-router-dom"
 import { BsPencilSquare, BsTrash, BsArrowsFullscreen } from "react-icons/bs"
 import Paginacion from "../../components/Paginacion"
+import Swal from "sweetalert2"
+import { toast } from "react-toastify"
 import "./AdminProductos.css"
 
 const PRODUCTOS_POR_PAGINA = 10
 
 function AdminProductos() {
-    const { productos, categorias, filtrarPorCategoria, buscarPorNombre } = useProductosContext()
+    const { productos, categorias, filtrarPorCategoria, buscarPorNombre, eliminarProducto } = useProductosContext()
     const [paginaActual, setPaginaActual] = useState(1)
     const [showImageModal, setShowImageModal] = useState(false)
     const [selectedImage, setSelectedImage] = useState(null)
@@ -38,6 +40,52 @@ function AdminProductos() {
 
     const handleCambioPagina = (numeroPagina) => {
         setPaginaActual(numeroPagina)
+    }
+
+    const handleEliminar = async (producto) => {
+        const result = await Swal.fire({
+            title: `Eliminar "${producto.nombre}"`,
+            html: `Para confirmar, por favor escribí: <b>${producto.nombre}</b>`,
+            input: "text",
+            inputPlaceholder: "Escribí el nombre acá",
+            inputAttributes: {
+                autocapitalize: "off",
+            },
+            icon: "warning",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            background: "var(--bg-color3)",
+            color: "var(--color1)",
+            confirmButtonText: "Si, eliminar",
+            cancelButtonText: "Cancelar",
+            customClass: {
+                popup: "swal2-popup-dark-detalle",
+                confirmButton: "swal2-confirm-button-custom-detalle",
+                cancelButton: "swal2-cancel-button-custom-detalle",
+            },
+            preConfirm: (inputValue) => {
+                if (inputValue !== producto.nombre) {
+                    Swal.showValidationMessage("El nombre ingresado no coincide.")
+                    return false
+                }
+                return inputValue
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
+        })
+
+        if (result.isConfirmed) {
+            try {
+                const respuesta = await eliminarProducto(producto.id)
+                if (respuesta?.simulated) {
+                    toast.info(`(Dry-Run) ${respuesta.message}`)
+                } else {
+                    toast.success(`El producto "${producto.nombre}" ha sido eliminado.`)
+                }
+            } catch (error) {
+                console.error("Error al eliminar producto desde AdminProductos:", error)
+                toast.error(error.message || "No se pudo eliminar el producto.")
+            }
+        }
     }
 
     return (
@@ -115,7 +163,7 @@ function AdminProductos() {
                                                 variant="outline-danger"
                                                 size="sm"
                                                 title="Eliminar"
-                                                // onClick={() => handleEliminar(producto.id, producto.nombre)}
+                                                onClick={() => handleEliminar(producto)}
                                             >
                                                 <BsTrash />
                                             </Button>
