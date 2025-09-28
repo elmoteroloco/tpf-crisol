@@ -95,9 +95,13 @@ function ProductoDetalle() {
 
         if (result.isConfirmed) {
             try {
-                await eliminarProducto(productoEncontrado.id)
-                toast.success(`El producto "${productoEncontrado.nombre}" ha sido eliminado.`)
-                navigate("/admin/productos", { replace: true })
+                const respuesta = await eliminarProducto(productoEncontrado.id)
+                if (respuesta?.simulated) {
+                    toast.info(`(Dry-Run) ${respuesta.message}`)
+                } else {
+                    toast.success(`El producto "${productoEncontrado.nombre}" ha sido eliminado.`)
+                }
+                navigate("/productos", { replace: true })
             } catch (error) {
                 console.error("Error al eliminar producto desde ProductoDetalle:", error)
                 toast.error(error.message || "No se pudo eliminar el producto.")
