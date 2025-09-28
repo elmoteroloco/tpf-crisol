@@ -81,7 +81,7 @@ function FormularioEdicion() {
             } else {
                 toast.success("Artículo actualizado con éxito")
             }
-            navigate(`/productos/${productoId}`)
+            navigate("/admin/productos")
         } catch (err) {
             console.error("Error al actualizar:", err)
             toast.error(`Error: ${err.message || "Hubo un problema al actualizar el artículo"}`)
