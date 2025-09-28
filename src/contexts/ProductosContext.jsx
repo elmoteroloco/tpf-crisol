@@ -174,6 +174,47 @@ export const ProductosProvider = ({ children }) => {
         }
     }
 
+    const agregarCategoria = async (nombreCategoria) => {
+        try {
+            const headers = getAuthHeaders()
+            const response = await fetch(`${API_BASE_URL}/categories`, {
+                method: "POST",
+                headers,
+                body: JSON.stringify({ nombre: nombreCategoria }),
+            })
+            const data = await response.json()
+            if (!response.ok) throw new Error(data.message || "Error al agregar la categoría.")
+
+            if (!data.simulated) {
+                await fetchDatos()
+            }
+            return data
+        } catch (error) {
+            console.error("Error en agregarCategoria:", error)
+            throw error
+        }
+    }
+
+    const eliminarCategoria = async (nombreCategoria) => {
+        try {
+            const headers = getAuthHeaders()
+            const response = await fetch(`${API_BASE_URL}/categories/${encodeURIComponent(nombreCategoria)}`, {
+                method: "DELETE",
+                headers,
+            })
+            const data = await response.json()
+            if (!response.ok) throw new Error(data.message || "Error al eliminar la categoría.")
+
+            if (!data.simulated) {
+                await fetchDatos()
+            }
+            return data
+        } catch (error) {
+            console.error("Error en eliminarCategoria:", error)
+            throw error
+        }
+    }
+
     const value = {
         productos,
         categorias,
@@ -186,6 +227,8 @@ export const ProductosProvider = ({ children }) => {
         agregarProducto,
         actualizarProducto,
         eliminarProducto,
+        agregarCategoria,
+        eliminarCategoria,
         fetchDatos,
     }
 

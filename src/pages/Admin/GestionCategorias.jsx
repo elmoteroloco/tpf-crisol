@@ -31,14 +31,33 @@ function GestionCategorias() {
 
     const handleEliminar = async (categoria) => {
         const result = await Swal.fire({
-            title: `¿Eliminar "${categoria}"?`,
-            text: "Esta acción no se puede deshacer.",
+            title: `Eliminar "${categoria}"`,
+            html: `Para confirmar, por favor escribí: <b>${categoria}</b>`,
+            input: "text",
+            inputPlaceholder: "Escribí el nombre de la categoría",
+            inputAttributes: {
+                autocapitalize: "off",
+            },
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, ¡eliminar!",
+            showLoaderOnConfirm: true,
+            background: "var(--bg-color3)",
+            color: "var(--color1)",
+            confirmButtonText: "Si, eliminar",
             cancelButtonText: "Cancelar",
+            customClass: {
+                popup: "swal2-popup-dark-categorias",
+                confirmButton: "swal2-confirm-button-custom-categorias",
+                cancelButton: "swal2-cancel-button-custom-categorias",
+            },
+            preConfirm: (inputValue) => {
+                if (inputValue !== categoria) {
+                    Swal.showValidationMessage("El nombre ingresado no coincide.")
+                    return false
+                }
+                return inputValue
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
         })
 
         if (result.isConfirmed) {
