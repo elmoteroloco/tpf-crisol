@@ -81,7 +81,11 @@ function AdminProductos() {
                                     <td className="align-middle col-descripcion">
                                         <OverlayTrigger
                                             placement="top"
-                                            overlay={<Tooltip id={`tooltip-desc-${producto.id}`}>{producto.descripcion}</Tooltip>}
+                                            overlay={
+                                                <Tooltip id={`tooltip-desc-${producto.id}`}>
+                                                    {producto.descripcion}
+                                                </Tooltip>
+                                            }
                                         >
                                             <span>{producto.descripcion}</span>
                                         </OverlayTrigger>
@@ -128,8 +132,4 @@ function AdminProductos() {
         </>
     )
 }
-
-```
-```diff
-
 export default AdminProductos
