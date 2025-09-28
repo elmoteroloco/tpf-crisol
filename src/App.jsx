@@ -8,6 +8,7 @@ import Nav from "./components/Nav"
 import BackgroundVideo from "./components/BackgroundVideo"
 import LoadingBar from "./components/LoadingBar"
 import Footer from "./components/Footer"
+import AdminBackgroundManager from "./components/AdminBackgroundManager"
 import AutRutasProtegidas from "./components/AutRutasProtegidas"
 import LoginModal from "./components/LoginModal"
 import "./App.css"
@@ -34,6 +35,7 @@ function App() {
             <div className="app-container">
                 <BackgroundVideo videoName="fireChackuezgifcomgiftomp4converter_ynccdi" />
 
+                <AdminBackgroundManager />
                 <Nav />
                 <ToastContainer
                     position="bottom-right"

@@ -166,3 +166,13 @@ body {
         text-align: center;
     }
 }
+
+/* Estilos para el fondo de admin */
+body.admin-background-active .video-background {
+    display: none !important;
+}
+
+body.admin-background-active {
+    background-color: #1a1a1a; /* Un color oscuro y plano */
+    background-image: none;
+}
