@@ -19,6 +19,7 @@ const About = lazy(() => import("./pages/About/About"))
 const Contacto = lazy(() => import("./pages/Contact/Contacto"))
 const ProductoDetalle = lazy(() => import("./pages/ProductsDetail/ProductoDetalle"))
 const Admin = lazy(() => import("./pages/Admin/Admin"))
+const AdminProductos = lazy(() => import("./pages/AdminProductos/AdminProductos"))
 const Perfil = lazy(() => import("./pages/Profile/Perfil"))
 const Checkout = lazy(() => import("./pages/Checkout/Checkout"))
 const FormularioProducto = lazy(() => import("./pages/Admin/FormularioProducto"))
@@ -98,12 +99,12 @@ function App() {
                                 path="/admin/productos"
                                 element={
                                     <AutRutasProtegidas soloAdmin>
-                                        <ProductosContainer />
+                                        <AdminProductos />
                                     </AutRutasProtegidas>
                                 }
                             />
                             <Route
-                                path="/admin/agregarProductos"
+                                path="/admin/agregarProducto"
                                 element={
                                     <AutRutasProtegidas soloAdmin>
                                         <FormularioProducto />

@@ -1,0 +1,33 @@
+.admin-productos-table .thumbnail-admin {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.admin-productos-table th,
+.admin-productos-table td {
+    vertical-align: middle;
+}
+
+.admin-productos-table td.col-descripcion {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filtros-admin-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 768px) {
+    .filtros-admin-container {
+        grid-template-columns: 1fr;
+    }
+}
