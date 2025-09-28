@@ -115,3 +115,17 @@
 .image-modal .btn-close {
     filter: invert(1) grayscale(100%) brightness(200%);
 }
+
+.easter-egg-trigger {
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.easter-egg-trigger:hover {
+    color: var(--color-hover);
+}
+
+.easter-egg-modal .modal-content {
+    background-color: transparent;
+    border: none;
+}
