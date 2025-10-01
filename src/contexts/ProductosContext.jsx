@@ -100,12 +100,12 @@ export const ProductosProvider = ({ children }) => {
         }
     }
 
-    const getAuthHeaders = () => {
-        const token = user?.stsTokenManager?.accessToken
-        if (!token) {
+    const getAuthHeaders = async () => {
+        if (!user) {
             toast.error("No estás autenticado.")
-            throw new Error("Token de autenticación no encontrado.")
+            throw new Error("Usuario no autenticado.")
         }
+        const token = await user.getIdToken()
         return {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -114,7 +114,7 @@ export const ProductosProvider = ({ children }) => {
 
     const agregarProducto = async (nuevoProducto) => {
         try {
-            const headers = getAuthHeaders()
+            const headers = await getAuthHeaders()
             const response = await fetch(`${API_BASE_URL}/products`, {
                 method: "POST",
                 headers,
@@ -135,7 +135,7 @@ export const ProductosProvider = ({ children }) => {
 
     const actualizarProducto = async (id, productoActualizado) => {
         try {
-            const headers = getAuthHeaders()
+            const headers = await getAuthHeaders()
             const response = await fetch(`${API_BASE_URL}/products/${id}`, {
                 method: "PUT",
                 headers,
@@ -156,7 +156,7 @@ export const ProductosProvider = ({ children }) => {
 
     const eliminarProducto = async (id) => {
         try {
-            const headers = getAuthHeaders()
+            const headers = await getAuthHeaders()
             const response = await fetch(`${API_BASE_URL}/products/${id}`, {
                 method: "DELETE",
                 headers,
@@ -176,7 +176,7 @@ export const ProductosProvider = ({ children }) => {
 
     const agregarCategoria = async (nombreCategoria) => {
         try {
-            const headers = getAuthHeaders()
+            const headers = await getAuthHeaders()
             const response = await fetch(`${API_BASE_URL}/categories`, {
                 method: "POST",
                 headers,
@@ -197,7 +197,7 @@ export const ProductosProvider = ({ children }) => {
 
     const eliminarCategoria = async (nombreCategoria) => {
         try {
-            const headers = getAuthHeaders()
+            const headers = await getAuthHeaders()
             const response = await fetch(`${API_BASE_URL}/categories/${encodeURIComponent(nombreCategoria)}`, {
                 method: "DELETE",
                 headers,
