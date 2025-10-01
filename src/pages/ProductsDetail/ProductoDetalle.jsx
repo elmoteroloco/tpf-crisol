@@ -3,7 +3,6 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import { CarritoContext } from "../../contexts/CarritoContext"
 import { useAuthContext } from "../../contexts/AuthContext"
 import { useProductosContext } from "../../contexts/ProductosContext"
-import Meta from "../../components/Meta"
 import "./ProductoDetalle.css"
 import LoadingBar from "../../components/LoadingBar"
 import SelectorCantidad from "../../components/SelectorCantidad"
@@ -47,16 +46,11 @@ function ProductoDetalle() {
                 "Cantidad Inválida",
                 "Por favor, selecciona al menos una unidad del producto.",
                 "warning",
-                "Entendido"
+                "Entendido",
             )
             return
         }
-        dispararSweetBasico(
-            "Producto Agregado",
-            "El producto fue agregado al carrito con éxito",
-            "success",
-            "Cerrar"
-        )
+        dispararSweetBasico("Producto Agregado", "El producto fue agregado al carrito con éxito", "success", "Cerrar")
         agregarAlCarrito({ ...productoEncontrado, cantidad })
     }
 
@@ -75,7 +69,7 @@ function ProductoDetalle() {
             input: "text",
             inputPlaceholder: "Escribí el nombre acá",
             inputAttributes: {
-                autocapitalize: "off"
+                autocapitalize: "off",
             },
             icon: "warning",
             showCancelButton: true,
@@ -87,7 +81,7 @@ function ProductoDetalle() {
             customClass: {
                 popup: "swal2-popup-dark-detalle",
                 confirmButton: "swal2-confirm-button-custom-detalle",
-                cancelButton: "swal2-cancel-button-custom-detalle"
+                cancelButton: "swal2-cancel-button-custom-detalle",
             },
             preConfirm: (inputValue) => {
                 if (inputValue !== productoEncontrado.nombre) {
@@ -96,14 +90,18 @@ function ProductoDetalle() {
                 }
                 return inputValue
             },
-            allowOutsideClick: () => !Swal.isLoading()
+            allowOutsideClick: () => !Swal.isLoading(),
         })
 
         if (result.isConfirmed) {
             try {
-                await eliminarProducto(productoEncontrado.id)
-                toast.success(`El producto "${productoEncontrado.nombre}" ha sido eliminado.`)
-                navigate("/admin/productos", { replace: true })
+                const respuesta = await eliminarProducto(productoEncontrado.id)
+                if (respuesta?.simulated) {
+                    toast.info(`(Dry-Run) ${respuesta.message}`)
+                } else {
+                    toast.success(`El producto "${productoEncontrado.nombre}" ha sido eliminado.`)
+                }
+                navigate("/productos", { replace: true })
             } catch (error) {
                 console.error("Error al eliminar producto desde ProductoDetalle:", error)
                 toast.error(error.message || "No se pudo eliminar el producto.")
@@ -143,20 +141,15 @@ function ProductoDetalle() {
 
     return (
         <>
-            <Meta
-                title={`${productoEncontrado.nombre} - Crisol`}
-                description={productoEncontrado.descripcion}
-                keywords={`${productoEncontrado.categoria}, ${productoEncontrado.nombre}, regalos, diseño`}
-            />
+            <title>{`${productoEncontrado.nombre} - Crisol`}</title>
+            <meta name="description" content={productoEncontrado.descripcion} />
             <Container className="my-5">
                 {" "}
                 <Row className="justify-content-center">
                     <Col md={8} lg={6}>
                         <Card className="p-4 shadow-lg detalle-card">
                             <Row className="g-0">
-                                <Col
-                                    md={5}
-                                    className="d-flex align-items-center justify-content-center">
+                                <Col md={5} className="d-flex align-items-center justify-content-center">
                                     <img
                                         className="img-fluid rounded-start"
                                         src={productoEncontrado.imagen}
@@ -192,23 +185,22 @@ function ProductoDetalle() {
                                                     <div className="d-flex flex-column flex-sm-row gap-2">
                                                         <Link
                                                             to={`/admin/editarProducto/${id}`}
-                                                            className="btn flex-grow-1 btn-admin-detalle btn-editar-detalle">
+                                                            className="btn flex-grow-1 btn-admin-detalle btn-editar-detalle"
+                                                        >
                                                             <BsPencilSquare className="me-2" />
                                                             Editar artículo
                                                         </Link>
                                                         <Button
                                                             onClick={handleEliminarProducto}
-                                                            className="btn flex-grow-1 btn-admin-detalle btn-eliminar-detalle">
+                                                            className="btn flex-grow-1 btn-admin-detalle btn-eliminar-detalle"
+                                                        >
                                                             <BsTrash className="me-2" />
                                                             Eliminar artículo
                                                         </Button>
                                                     </div>
                                                 ) : (
-                                                    <Button
-                                                        className="btn-agregar-carrito"
-                                                        onClick={funcionCarrito}>
-                                                        <BsCartPlus className="me-2" /> Agregar al
-                                                        carrito
+                                                    <Button className="btn-agregar-carrito" onClick={funcionCarrito}>
+                                                        <BsCartPlus className="me-2" /> Agregar al carrito
                                                     </Button>
                                                 )}
                                             </Col>

@@ -16,7 +16,6 @@ Esta aplicación es el Trabajo Práctico Final desarrollado como parte de la cur
 *   **Cloudinary:** Empleado como servidor/API para el alojamiento y la entrega optimizada de imágenes de productos.
 *   **SweetAlert2:** Integrado para mostrar alertas personalizadas y amigables, mejorando la experiencia de usuario.
 *   **React-Toastify:** Para notificaciones no intrusivas en el panel de administrador.
-*   **React-Helmet-Async:** Para la gestión dinámica de metadatos de página (títulos, descripciones), mejorando el SEO.
 *   **React Icons:** Para la inclusión de una amplia variedad de iconos SVG en la aplicación.
 *   **Herramientas Adicionales:** Mención especial a `LS.exe` (2003), una utilidad freeware invaluable para la generación de listas de archivos durante el desarrollo.
 
@@ -52,7 +51,6 @@ This application is a practical exercise developed as part of the React course (
 *   **Cloudinary:** Employed as a server/API for hosting and delivering optimized product images.
 *   **SweetAlert2:** Integrated to display customized and user-friendly alert boxes, enhancing the user experience.
 *   **React-Toastify:** For non-intrusive notifications in the admin panel.
-*   **React-Helmet-Async:** For dynamic management of page metadata (titles, descriptions), improving SEO.
 *   **React Icons:** For including a wide variety of SVG icons in the application.
 *   **Additional Tools:** Special mention to `LS.exe` (2003), an invaluable freeware utility for generating file lists during development.
 

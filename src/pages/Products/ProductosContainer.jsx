@@ -4,7 +4,6 @@ import { useAuthContext } from "../../contexts/AuthContext"
 import { useProductosContext } from "../../contexts/ProductosContext"
 import { useModalContext } from "../../contexts/ModalContext"
 import Card from "../../components/Card"
-import Meta from "../../components/Meta"
 import Paginacion from "../../components/Paginacion"
 import { Container, Row, Col, Form } from "react-bootstrap"
 import "./ProductosContainer.css"
@@ -12,8 +11,7 @@ import LoadingBar from "../../components/LoadingBar"
 
 function ProductosContainer() {
     const { user } = useAuthContext()
-    const { productos, categorias, cargando, error, filtrarPorCategoria, buscarPorNombre } =
-        useProductosContext()
+    const { productos, categorias, cargando, error, filtrarPorCategoria, buscarPorNombre } = useProductosContext()
     const { openLoginModal } = useModalContext()
     const location = useLocation()
 
@@ -62,9 +60,10 @@ function ProductosContainer() {
 
     return (
         <>
-            <Meta
-                title="Productos - Crisol"
-                description="Explorá nuestro catálogo de productos de diseño artesanal. Encontrá el regalo perfecto."
+            <title>Productos - Crisol</title>
+            <meta
+                name="description"
+                content="Explorá nuestro catálogo de productos de diseño artesanal. Encontrá el regalo perfecto."
             />
             <Container fluid className="mt-4 pt-3">
                 <Row className="mb-4 justify-content-between align-items-center">
@@ -81,13 +80,12 @@ function ProductosContainer() {
                     </Col>
                     <Col md={4} lg={3} className="mt-3 mt-md-0">
                         <Form.Group controlId="filtroCategoria">
-                            <Form.Label className="visually-hidden">
-                                Filtrar por categoría
-                            </Form.Label>
+                            <Form.Label className="visually-hidden">Filtrar por categoría</Form.Label>
                             <Form.Select
                                 className="filtro-select"
                                 onChange={handleCategoriaChange}
-                                aria-label="Filtrar por categoría">
+                                aria-label="Filtrar por categoría"
+                            >
                                 {categorias.map((cat) => (
                                     <option key={cat} value={cat}>
                                         {cat}

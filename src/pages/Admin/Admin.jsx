@@ -1,51 +1,43 @@
-import { Navigate } from "react-router-dom"
-import { useAuthContext } from "../../contexts/AuthContext.jsx"
-import styled from "styled-components"
-
-const AdminContainer = styled.div`
-    position: relative;
-    width: 50vw;
-    max-width: 700px;
-    margin: 4rem auto;
-    aspect-ratio: 16 / 9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
-
-const LayeredVideo = styled.video`
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: ${(props) => props.zIndex};
-    opacity: ${(props) => props.opacity || 1};
-    object-fit: cover;
-`
+import React from "react"
+import { useAuthContext } from "../../contexts/AuthContext"
+import { Navigate, Link } from "react-router-dom"
+import { Container, Row, Col } from "react-bootstrap"
+import { BsBoxSeam, BsPlusCircle, BsTags } from "react-icons/bs"
+import "../AdminProductos/AdminProductos.css"
 
 export default function Admin() {
-    const { user } = useAuthContext()
+    const { user, admin } = useAuthContext()
 
-    if (!user) {
+    if (!user || !admin) {
         return <Navigate to="/" replace />
     }
 
-    const cloudName = "dy5u2krtv"
-    const transformations = "q_auto,f_auto"
-
-    const videoKnightUrl = `https://res.cloudinary.com/${cloudName}/video/upload/${transformations}/knightcodeezgifcomgiftomp4converter_fjycc8`
-    const videoMatrixUrl = `https://res.cloudinary.com/${cloudName}/video/upload/${transformations}/Digital_rain_animation_small_letters_clear_wikiezgifcomgiftomp4converter_xk6wsw`
-
     return (
-        <AdminContainer>
-            <LayeredVideo zIndex={1} autoPlay loop muted playsInline>
-                <source src={videoKnightUrl} />
-            </LayeredVideo>
-            <LayeredVideo zIndex={2} opacity={0.6} autoPlay loop muted playsInline>
-                <source src={videoMatrixUrl} />
-            </LayeredVideo>
-        </AdminContainer>
+        <>
+            <title>Panel de Administración - Crisol</title>
+            <Container className="my-5 admin-dashboard">
+                <h2 className="text-center mb-5 admin-title">Panel de Administración</h2>
+                <Row>
+                    <Col md={4} className="text-center admin-link-card">
+                        <Link to="/admin/productos" className="admin-link">
+                            <BsBoxSeam size={50} />
+                            <h3>Gestionar Productos</h3>
+                        </Link>
+                    </Col>
+                    <Col md={4} className="text-center admin-link-card">
+                        <Link to="/admin/agregarProducto" className="admin-link">
+                            <BsPlusCircle size={50} />
+                            <h3>Agregar Producto</h3>
+                        </Link>
+                    </Col>
+                    <Col md={4} className="text-center admin-link-card">
+                        <Link to="/admin/categorias" className="admin-link">
+                            <BsTags size={50} />
+                            <h3>Gestionar Categorías</h3>
+                        </Link>
+                    </Col>
+                </Row>
+            </Container>
+        </>
     )
 }

@@ -13,7 +13,14 @@
 }
 
 .login-modal-custom .modal-header .btn-close {
-    filter: invert(1) grayscale(100%) brightness(200%);
+    /* Este filtro convierte el ícono negro original a un tono "amarillo oro" (#FFD700) */
+    filter: invert(85%) sepia(98%) saturate(1400%) hue-rotate(320deg) brightness(105%) contrast(101%);
+}
+
+/* Anulación para el variant="white" que también aplica un filtro */
+.login-modal-custom .modal-header .btn-close-white {
+    /* Nos aseguramos de que nuestro filtro personalizado tenga prioridad */
+    filter: invert(85%) sepia(98%) saturate(1400%) hue-rotate(320deg) brightness(105%) contrast(101%);
 }
 
 .login-modal-custom .form-control {

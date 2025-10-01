@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react"
-import { useNavigate } from "react-router-dom"
 import { Container, Form, Button, Card, Row, Col } from "react-bootstrap"
 import { useAuthContext } from "../../contexts/AuthContext"
 import { CarritoContext } from "../../contexts/CarritoContext"
@@ -15,7 +14,7 @@ function Checkout() {
     const [formData, setFormData] = useState({
         nombre: "",
         telefono: "",
-        direccion: ""
+        direccion: "",
     })
 
     const total = productosCarrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0)
@@ -32,7 +31,7 @@ function Checkout() {
                 "Campos incompletos",
                 "Por favor, completá todos los datos para continuar.",
                 "warning",
-                "Ok"
+                "Ok",
             )
             return
         }
@@ -42,10 +41,10 @@ function Checkout() {
                 nombre: formData.nombre,
                 telefono: formData.telefono,
                 email: user,
-                direccion: formData.direccion
+                direccion: formData.direccion,
             },
             items: productosCarrito,
-            total: total
+            total: total,
         }
 
         try {
@@ -55,7 +54,7 @@ function Checkout() {
                 "¡Compra exitosa!",
                 `Tu orden ha sido generada con el ID: ${ordenId}`,
                 "success",
-                "¡Genial!"
+                "¡Genial!",
             )
             navigate("/")
         } catch (error) {
@@ -64,7 +63,7 @@ function Checkout() {
                 "Error",
                 "No se pudo completar la compra. Por favor, intentá de nuevo.",
                 "error",
-                "Cerrar"
+                "Cerrar",
             )
         }
     }

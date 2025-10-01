@@ -20,22 +20,29 @@ function Perfil() {
     }
 
     return (
-        <Container className="d-flex justify-content-center align-items-center vh-100">
-            <StyledProfileCard className="p-4 shadow-sm text-center">
-                <Card.Body>
-                    <Card.Title as="h4" className="mb-3">
-                        Perfil
-                    </Card.Title>
-                    <Card.Text>
-                        Bienvenido, <strong>{user}</strong>
-                    </Card.Text>
-                    {admin && <p className="text-warning fw-bold">(Administrador)</p>}
-                    <Button variant="danger" onClick={handleLogout} className="mt-3">
-                        Cerrar sesión
-                    </Button>
-                </Card.Body>
-            </StyledProfileCard>
-        </Container>
+        <>
+            <title>Mi Perfil - Crisol</title>
+            <meta
+                name="description"
+                content="Gestioná tu información de perfil y revisá tu historial de compras en Crisol."
+            />
+            <Container className="d-flex justify-content-center align-items-center">
+                <StyledProfileCard className="p-4 shadow-sm text-center">
+                    <Card.Body>
+                        <Card.Title as="h4" className="mb-3">
+                            Perfil
+                        </Card.Title>
+                        <Card.Text>
+                            Bienvenido, <strong>{user.displayName || user.email}</strong>
+                        </Card.Text>
+                        {admin && <p className="text-warning fw-bold">(Administrador)</p>}
+                        <Button variant="danger" onClick={handleLogout} className="mt-3">
+                            Cerrar sesión
+                        </Button>
+                    </Card.Body>
+                </StyledProfileCard>
+            </Container>
+        </>
     )
 }
 

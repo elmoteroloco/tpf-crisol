@@ -1,5 +1,4 @@
 import React from "react"
-import Meta from "../../components/Meta"
 import { useForm, ValidationError } from "@formspree/react"
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap"
 import { useAuthContext } from "../../contexts/AuthContext"
@@ -13,9 +12,10 @@ function Contacto() {
 
     return (
         <>
-            <Meta
-                title="Contacto - Crisol"
-                description="Contactate con Crisol para consultas, pedidos especiales o regalos empresariales. Estamos para ayudarte."
+            <title>Contacto - Crisol</title>
+            <meta
+                name="description"
+                content="Contactate con Crisol para consultas, pedidos especiales o regalos empresariales. Estamos para ayudarte."
             />
             <Container className="contacto-container my-5">
                 <Row className="justify-content-md-center">
@@ -24,9 +24,7 @@ function Contacto() {
                             <Card className="text-center p-4 shadow-sm transparent-dark-card">
                                 <Card.Body>
                                     <Card.Title as="h2">¡Gracias por tu mensaje!</Card.Title>
-                                    <Card.Text>
-                                        Recibimos tu consulta y te responderemos a la brevedad.
-                                    </Card.Text>
+                                    <Card.Text>Recibimos tu consulta y te responderemos a la brevedad.</Card.Text>
                                 </Card.Body>
                             </Card>
                         ) : (
@@ -34,20 +32,9 @@ function Contacto() {
                                 <Card.Body>
                                     <h2 className="text-center mb-4">¡Conectanos!</h2>
                                     <Form onSubmit={handleSubmit}>
-                                        {user && (
-                                            <input
-                                                type="hidden"
-                                                name="usuario_logueado"
-                                                value={user}
-                                            />
-                                        )}
+                                        {user && <input type="hidden" name="usuario_logueado" value={user.email} />}
                                         <Form.Group className="mb-3" controlId="nombre">
-                                            <Form.Control
-                                                type="text"
-                                                name="nombre"
-                                                placeholder="tu nombre"
-                                                required
-                                            />
+                                            <Form.Control type="text" name="nombre" placeholder="tu nombre" required />
                                         </Form.Group>
 
                                         <Form.Group className="mb-3" controlId="email">
@@ -55,8 +42,8 @@ function Contacto() {
                                                 type="email"
                                                 name="email"
                                                 placeholder="tu e-mail"
-                                                defaultValue={user || ""}
-                                                readOnly={!!user}
+                                                defaultValue={user ? user.email : ""}
+                                                readOnly={Boolean(user)}
                                                 required
                                             />
                                             <ValidationError
@@ -78,10 +65,7 @@ function Contacto() {
                                         </Form.Group>
 
                                         <div className="d-grid">
-                                            <Button
-                                                variant="primary"
-                                                type="submit"
-                                                disabled={state.submitting}>
+                                            <Button variant="primary" type="submit" disabled={state.submitting}>
                                                 {state.submitting ? "enviando..." : "enviar!"}
                                             </Button>
                                         </div>

@@ -17,8 +17,12 @@ function GestionCategorias() {
             return
         }
         try {
-            await agregarCategoria(nuevaCategoria)
-            toast.success(`Categoría "${nuevaCategoria}" agregada con éxito.`)
+            const respuesta = await agregarCategoria(nuevaCategoria)
+            if (respuesta?.simulated) {
+                toast.info(`(Dry-Run) ${respuesta.message}`)
+            } else {
+                toast.success(`Categoría "${nuevaCategoria}" agregada con éxito.`)
+            }
             setNuevaCategoria("")
         } catch (error) {
             toast.error(`Error al agregar categoría: ${error.message}`)
@@ -27,20 +31,43 @@ function GestionCategorias() {
 
     const handleEliminar = async (categoria) => {
         const result = await Swal.fire({
-            title: `¿Eliminar "${categoria}"?`,
-            text: "Esta acción no se puede deshacer.",
+            title: `Eliminar "${categoria}"`,
+            html: `Para confirmar, por favor escribí: <b>${categoria}</b>`,
+            input: "text",
+            inputPlaceholder: "Escribí el nombre de la categoría",
+            inputAttributes: {
+                autocapitalize: "off",
+            },
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Sí, ¡eliminar!",
-            cancelButtonText: "Cancelar"
+            showLoaderOnConfirm: true,
+            background: "var(--bg-color3)",
+            color: "var(--color1)",
+            confirmButtonText: "Si, eliminar",
+            cancelButtonText: "Cancelar",
+            customClass: {
+                popup: "swal2-popup-dark-categorias",
+                confirmButton: "swal2-confirm-button-custom-categorias",
+                cancelButton: "swal2-cancel-button-custom-categorias",
+            },
+            preConfirm: (inputValue) => {
+                if (inputValue !== categoria) {
+                    Swal.showValidationMessage("El nombre ingresado no coincide.")
+                    return false
+                }
+                return inputValue
+            },
+            allowOutsideClick: () => !Swal.isLoading(),
         })
 
         if (result.isConfirmed) {
             try {
-                await eliminarCategoria(categoria)
-                toast.success(`Categoría "${categoria}" eliminada.`)
+                const respuesta = await eliminarCategoria(categoria)
+                if (respuesta?.simulated) {
+                    toast.info(`(Dry-Run) ${respuesta.message}`)
+                } else {
+                    toast.success(`Categoría "${categoria}" eliminada.`)
+                }
             } catch (error) {
                 toast.error(`Error al eliminar: ${error.message}`)
             }
@@ -55,9 +82,7 @@ function GestionCategorias() {
                     <Row className="align-items-end">
                         <Col>
                             <Form.Group controlId="formNuevaCategoria">
-                                <Form.Label className="gestion-categorias-label">
-                                    Nueva Categoría
-                                </Form.Label>
+                                <Form.Label className="gestion-categorias-label">Nueva Categoría</Form.Label>
                                 <Form.Control
                                     className="gestion-categorias-input"
                                     type="text"
@@ -80,14 +105,9 @@ function GestionCategorias() {
                         {categorias
                             .filter((cat) => cat !== "Todas")
                             .map((cat) => (
-                                <ListGroup.Item
-                                    key={cat}
-                                    className="d-flex justify-content-between align-items-center">
+                                <ListGroup.Item key={cat} className="d-flex justify-content-between align-items-center">
                                     {cat}
-                                    <Button
-                                        variant="outline-danger"
-                                        size="sm"
-                                        onClick={() => handleEliminar(cat)}>
+                                    <Button variant="outline-danger" size="sm" onClick={() => handleEliminar(cat)}>
                                         <BsTrash />
                                     </Button>
                                 </ListGroup.Item>
