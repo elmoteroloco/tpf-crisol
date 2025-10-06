@@ -41,7 +41,7 @@ function Checkout() {
             comprador: {
                 nombre: formData.nombre,
                 telefono: formData.telefono,
-                email: user,
+                email: user.email,
                 direccion: formData.direccion,
             },
             items: productosCarrito,
