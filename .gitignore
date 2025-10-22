@@ -15,7 +15,6 @@ lerna-debug.log* # lerna
 /dist-ssr
 
 # Archivos de variables de entorno
-# ¡MUY IMPORTANTE! Nunca subir las claves secretas a un repositorio público.
 .env
 .env.local
 .env.*.local
@@ -26,3 +25,4 @@ lerna-debug.log* # lerna
 .idea
 .DS_Store
 Thumbs.db
+.gitignore
