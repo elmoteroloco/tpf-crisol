@@ -4,9 +4,22 @@ import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithEmailAndPassword,
-    signInWithPopup,
+    signInWithPopup
 } from "firebase/auth"
-import { getFirestore, collection, getDocs, getDoc, doc, addDoc, serverTimestamp } from "firebase/firestore"
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    getDoc,
+    doc,
+    addDoc,
+    updateDoc,
+    deleteDoc,
+    writeBatch,
+    serverTimestamp,
+    query,
+    where
+} from "firebase/firestore"
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -14,7 +27,7 @@ const firebaseConfig = {
     projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
     storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
 }
 
 const app = initializeApp(firebaseConfig)
@@ -40,7 +53,7 @@ export const crearOrdenDeCompra = async (orden) => {
         const ordenesCollection = collection(db, "ordenes")
         const docRef = await addDoc(ordenesCollection, {
             ...orden,
-            fecha: serverTimestamp(),
+            fecha: serverTimestamp()
         })
         return docRef.id
     } catch (error) {
@@ -57,8 +70,9 @@ export const iniciarSesion = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password)
 }
 
+const productosCollectionRef = collection(db, "productos")
+
 export const obtenerProductosFirebase = async () => {
-    const productosCollectionRef = collection(db, "productos")
     const querySnapshot = await getDocs(productosCollectionRef)
     return querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
 }
@@ -74,9 +88,51 @@ export const obtenerProductoPorIdFirebase = async (id) => {
     }
 }
 
+export const agregarProductoFirebase = async (producto) => {
+    const docRef = await addDoc(productosCollectionRef, producto)
+    return { id: docRef.id, ...producto }
+}
+
+export const actualizarProductoFirebase = async (id, productoActualizado) => {
+    const docRef = doc(db, "productos", id)
+    await updateDoc(docRef, productoActualizado)
+    return { id, ...productoActualizado }
+}
+
+export const eliminarProductoFirebase = async (id) => {
+    const docRef = doc(db, "productos", id)
+    await deleteDoc(docRef)
+    return { message: `Producto con ID ${id} eliminado.` }
+}
+
+const categoriasCollectionRef = collection(db, "categorias")
+
 export const obtenerCategoriasFirebase = async () => {
-    const categoriasCollectionRef = collection(db, "categorias")
     const querySnapshot = await getDocs(categoriasCollectionRef)
     const categorias = querySnapshot.docs.map((doc) => doc.data().nombre)
     return categorias.sort((a, b) => a.localeCompare(b))
+}
+
+export const agregarCategoriaFirebase = async (nombreCategoria) => {
+    const nuevaCategoria = { nombre: nombreCategoria }
+    const docRef = await addDoc(categoriasCollectionRef, nuevaCategoria)
+    return { id: docRef.id, ...nuevaCategoria }
+}
+
+export const eliminarCategoriaFirebase = async (nombreCategoria) => {
+    try {
+        const q = query(categoriasCollectionRef, where("nombre", "==", nombreCategoria))
+        const querySnapshot = await getDocs(q)
+
+        if (querySnapshot.empty) {
+            throw new Error(`No se encontró la categoría "${nombreCategoria}" para eliminar.`)
+        }
+
+        const batch = writeBatch(db)
+        querySnapshot.forEach((doc) => batch.delete(doc.ref))
+        await batch.commit()
+    } catch (error) {
+        console.error("Error al eliminar categoría en Firebase:", error)
+        throw error
+    }
 }

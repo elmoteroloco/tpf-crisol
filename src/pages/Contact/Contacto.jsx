@@ -12,11 +12,6 @@ function Contacto() {
 
     return (
         <>
-            <title>Contacto - Crisol</title>
-            <meta
-                name="description"
-                content="Contactate con Crisol para consultas, pedidos especiales o regalos empresariales. Estamos para ayudarte."
-            />
             <Container className="contacto-container my-5">
                 <Row className="justify-content-md-center">
                     <Col md={8} lg={6}>
@@ -24,7 +19,9 @@ function Contacto() {
                             <Card className="text-center p-4 shadow-sm transparent-dark-card">
                                 <Card.Body>
                                     <Card.Title as="h2">¡Gracias por tu mensaje!</Card.Title>
-                                    <Card.Text>Recibimos tu consulta y te responderemos a la brevedad.</Card.Text>
+                                    <Card.Text>
+                                        Recibimos tu consulta y te responderemos a la brevedad.
+                                    </Card.Text>
                                 </Card.Body>
                             </Card>
                         ) : (
@@ -32,9 +29,20 @@ function Contacto() {
                                 <Card.Body>
                                     <h2 className="text-center mb-4">¡Conectanos!</h2>
                                     <Form onSubmit={handleSubmit}>
-                                        {user && <input type="hidden" name="usuario_logueado" value={user.email} />}
+                                        {user && (
+                                            <input
+                                                type="hidden"
+                                                name="usuario_logueado"
+                                                value={user}
+                                            />
+                                        )}
                                         <Form.Group className="mb-3" controlId="nombre">
-                                            <Form.Control type="text" name="nombre" placeholder="tu nombre" required />
+                                            <Form.Control
+                                                type="text"
+                                                name="nombre"
+                                                placeholder="tu nombre"
+                                                required
+                                            />
                                         </Form.Group>
 
                                         <Form.Group className="mb-3" controlId="email">
@@ -42,8 +50,8 @@ function Contacto() {
                                                 type="email"
                                                 name="email"
                                                 placeholder="tu e-mail"
-                                                defaultValue={user ? user.email : ""}
-                                                readOnly={Boolean(user)}
+                                                defaultValue={user || ""}
+                                                readOnly={!!user}
                                                 required
                                             />
                                             <ValidationError
@@ -65,7 +73,10 @@ function Contacto() {
                                         </Form.Group>
 
                                         <div className="d-grid">
-                                            <Button variant="primary" type="submit" disabled={state.submitting}>
+                                            <Button
+                                                variant="primary"
+                                                type="submit"
+                                                disabled={state.submitting}>
                                                 {state.submitting ? "enviando..." : "enviar!"}
                                             </Button>
                                         </div>

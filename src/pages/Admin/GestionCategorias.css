@@ -53,38 +53,3 @@
     background-color: var(--color3);
     border-color: var(--color-texto-btnes);
 }
-
-/* Estilos para el SweetAlert2 personalizado */
-.swal2-popup-dark-categorias {
-    background-color: var(--bg-color3) !important;
-    color: var(--color1) !important;
-    border: 1px solid var(--color2);
-}
-
-.swal2-popup-dark-categorias .swal2-title,
-.swal2-popup-dark-categorias .swal2-html-container {
-    color: var(--color1) !important;
-}
-
-.swal2-popup-dark-categorias .swal2-input {
-    background-color: rgba(0, 0, 0, 0.3) !important;
-    color: var(--color1) !important;
-    border: 1px solid var(--color2) !important;
-}
-
-.swal2-popup-dark-categorias .swal2-input:focus {
-    border-color: var(--color-hover) !important;
-    box-shadow: 0 0 0 0.2rem rgba(var(--color-hover-rgb), 0.25) !important;
-}
-
-.swal2-confirm-button-custom-categorias {
-    background-color: #d33 !important;
-    border-color: #d33 !important;
-    color: #fff !important;
-}
-
-.swal2-cancel-button-custom-categorias {
-    background-color: #3085d6 !important;
-    border-color: #3085d6 !important;
-    color: #fff !important;
-}

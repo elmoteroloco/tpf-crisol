@@ -11,7 +11,8 @@ import LoadingBar from "../../components/LoadingBar"
 
 function ProductosContainer() {
     const { user } = useAuthContext()
-    const { productos, categorias, cargando, error, filtrarPorCategoria, buscarPorNombre } = useProductosContext()
+    const { productos, categorias, cargando, error, filtrarPorCategoria, buscarPorNombre } =
+        useProductosContext()
     const { openLoginModal } = useModalContext()
     const location = useLocation()
 
@@ -60,11 +61,6 @@ function ProductosContainer() {
 
     return (
         <>
-            <title>Productos - Crisol</title>
-            <meta
-                name="description"
-                content="Explorá nuestro catálogo de productos de diseño artesanal. Encontrá el regalo perfecto."
-            />
             <Container fluid className="mt-4 pt-3">
                 <Row className="mb-4 justify-content-between align-items-center">
                     <Col md={5} lg={4}>
@@ -80,12 +76,13 @@ function ProductosContainer() {
                     </Col>
                     <Col md={4} lg={3} className="mt-3 mt-md-0">
                         <Form.Group controlId="filtroCategoria">
-                            <Form.Label className="visually-hidden">Filtrar por categoría</Form.Label>
+                            <Form.Label className="visually-hidden">
+                                Filtrar por categoría
+                            </Form.Label>
                             <Form.Select
                                 className="filtro-select"
                                 onChange={handleCategoriaChange}
-                                aria-label="Filtrar por categoría"
-                            >
+                                aria-label="Filtrar por categoría">
                                 {categorias.map((cat) => (
                                     <option key={cat} value={cat}>
                                         {cat}

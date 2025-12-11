@@ -8,7 +8,6 @@ import Nav from "./components/Nav"
 import BackgroundVideo from "./components/BackgroundVideo"
 import LoadingBar from "./components/LoadingBar"
 import Footer from "./components/Footer"
-import AdminBackgroundManager from "./components/AdminBackgroundManager"
 import AutRutasProtegidas from "./components/AutRutasProtegidas"
 import LoginModal from "./components/LoginModal"
 import "./App.css"
@@ -20,7 +19,6 @@ const About = lazy(() => import("./pages/About/About"))
 const Contacto = lazy(() => import("./pages/Contact/Contacto"))
 const ProductoDetalle = lazy(() => import("./pages/ProductsDetail/ProductoDetalle"))
 const Admin = lazy(() => import("./pages/Admin/Admin"))
-const AdminProductos = lazy(() => import("./pages/AdminProductos/AdminProductos"))
 const Perfil = lazy(() => import("./pages/Profile/Perfil"))
 const Checkout = lazy(() => import("./pages/Checkout/Checkout"))
 const FormularioProducto = lazy(() => import("./pages/Admin/FormularioProducto"))
@@ -35,7 +33,6 @@ function App() {
             <div className="app-container">
                 <BackgroundVideo videoName="fireChackuezgifcomgiftomp4converter_ynccdi" />
 
-                <AdminBackgroundManager />
                 <Nav />
                 <ToastContainer
                     position="bottom-right"
@@ -101,12 +98,12 @@ function App() {
                                 path="/admin/productos"
                                 element={
                                     <AutRutasProtegidas soloAdmin>
-                                        <AdminProductos />
+                                        <ProductosContainer />
                                     </AutRutasProtegidas>
                                 }
                             />
                             <Route
-                                path="/admin/agregarProducto"
+                                path="/admin/agregarProductos"
                                 element={
                                     <AutRutasProtegidas soloAdmin>
                                         <FormularioProducto />

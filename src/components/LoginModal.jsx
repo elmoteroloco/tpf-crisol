@@ -1,19 +1,14 @@
 import { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import { crearUsuario, iniciarSesion, iniciarSesionConGoogle } from "../firebase/firebase"
-import { useModalContext } from "../contexts/ModalContext"
 import { dispararSweetBasico } from "../utils/SweetAlert"
 import { Modal, Button, Form } from "react-bootstrap"
-import styled from "styled-components"
 import { FcGoogle } from "react-icons/fc"
+import { useAuthContext } from "../contexts/AuthContext"
 import "./LoginModal.css"
 
-const StyledModal = styled(Modal)`
-    z-index: ${(props) => props.$zIndex};
-`
-
-function LoginModal() {
-    const { showLoginModal, closeLoginModal } = useModalContext()
+function LoginModal({ show, onHide }) {
+    const { login } = useAuthContext()
     const location = useLocation()
     const [usuario, setUsuario] = useState("")
     const [password, setPassword] = useState("")
@@ -22,12 +17,13 @@ function LoginModal() {
     const handleLogin = async (e) => {
         e.preventDefault()
         iniciarSesion(usuario, password)
-            .then((userCredential) => {
-                dispararSweetBasico("¡Bienvenido de vuelta!", "", "success", "Confirmar")
-                closeLoginModal()
+            .then(() => {
+                login(usuario)
+                dispararSweetBasico("Inicio exitoso", "", "success", "Confirmar")
+                onHide()
             })
             .catch((error) => {
-                if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password") {
+                if (error.code === "auth/invalid-credential") {
                     dispararSweetBasico("Credenciales incorrectas", "", "error", "Cerrar")
                 } else {
                     dispararSweetBasico("Error", "Ocurrió un error inesperado.", "error", "Cerrar")
@@ -39,8 +35,9 @@ function LoginModal() {
         e.preventDefault()
         crearUsuario(usuario, password)
             .then(() => {
+                login(usuario)
                 dispararSweetBasico("Registro exitoso", "Ya podés comprar.", "success", "Confirmar")
-                closeLoginModal()
+                onHide()
             })
             .catch((error) => {
                 if (error.code === "auth/weak-password") {
@@ -48,10 +45,15 @@ function LoginModal() {
                         "Contraseña débil",
                         "La contraseña debe tener al menos 6 caracteres",
                         "error",
-                        "Cerrar",
+                        "Cerrar"
                     )
                 } else if (error.code === "auth/email-already-in-use") {
-                    dispararSweetBasico("Email en uso", "El email ingresado ya está registrado.", "error", "Cerrar")
+                    dispararSweetBasico(
+                        "Email en uso",
+                        "El email ingresado ya está registrado.",
+                        "error",
+                        "Cerrar"
+                    )
                 } else {
                     dispararSweetBasico("Error", "Ocurrió un error inesperado.", "error", "Cerrar")
                 }
@@ -61,12 +63,18 @@ function LoginModal() {
     const handleGoogleLogin = () => {
         iniciarSesionConGoogle()
             .then((userCredential) => {
-                dispararSweetBasico("¡Bienvenido con Google!", "", "success", "Confirmar")
-                closeLoginModal()
+                login(userCredential.email)
+                dispararSweetBasico("Inicio exitoso con Google", "", "success", "Confirmar")
+                onHide()
             })
             .catch((error) => {
                 console.error("Error al iniciar sesión con Google:", error)
-                dispararSweetBasico("Error con Google", "No se pudo iniciar sesión con Google.", "error", "Cerrar")
+                dispararSweetBasico(
+                    "Error con Google",
+                    "No se pudo iniciar sesión con Google.",
+                    "error",
+                    "Cerrar"
+                )
             })
     }
 
@@ -79,21 +87,19 @@ function LoginModal() {
     }
 
     useEffect(() => {
-        if (showLoginModal) {
-            closeLoginModal()
+        if (show) {
+            onHide()
         }
-    }, [location, closeLoginModal])
+    }, [location, onHide])
 
     return (
-        <StyledModal
-            show={showLoginModal}
-            onHide={closeLoginModal}
+        <Modal
+            show={show}
+            onHide={onHide}
             onExited={handleExited}
             centered
-            $zIndex={1055}
-            className="login-modal-custom"
-        >
-            <Modal.Header closeButton>
+            className="login-modal-custom">
+            <Modal.Header closeButton closeVariant="white">
                 <Modal.Title>{isLoginView ? "Ingresá" : "Creá tu cuenta"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -127,8 +133,7 @@ function LoginModal() {
                         <Button
                             variant="outline-primary"
                             className="w-100 d-flex align-items-center justify-content-center"
-                            onClick={handleGoogleLogin}
-                        >
+                            onClick={handleGoogleLogin}>
                             <FcGoogle className="me-2" />
                             seguí con tu cuenta Google
                         </Button>
@@ -163,15 +168,14 @@ function LoginModal() {
                         <Button
                             variant="outline-secondary"
                             className="w-100 d-flex align-items-center justify-content-center"
-                            onClick={handleGoogleLogin}
-                        >
+                            onClick={handleGoogleLogin}>
                             <FcGoogle className="me-2" />
                             seguí con tu cuenta Google
                         </Button>
                     </Form>
                 )}
             </Modal.Body>
-        </StyledModal>
+        </Modal>
     )
 }
 

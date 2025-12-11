@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useParams, useNavigate, Link, Navigate } from "react-router-dom"
+import { useParams, useNavigate, Link } from "react-router-dom"
 import { useProductosContext } from "../../contexts/ProductosContext"
 import { useAuthContext } from "../../contexts/AuthContext"
 import LoadingBar from "../../components/LoadingBar"
@@ -11,20 +11,16 @@ function FormularioEdicion() {
     const { obtenerProducto, actualizarProducto, categorias } = useProductosContext()
     const { id } = useParams()
     const navigate = useNavigate()
-    const { admin } = useAuthContext()
 
-    const [formData, setFormData] = useState(null)
+    const [producto, setProducto] = useState({})
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState(null)
+    const { admin } = useAuthContext()
 
     useEffect(() => {
         obtenerProducto(id)
             .then((data) => {
-                if (data) {
-                    setFormData(data)
-                } else {
-                    throw new Error("Producto no encontrado.")
-                }
+                setProducto(data)
             })
             .catch((err) => {
                 setError(err.message || "Error al cargar el producto.")
@@ -36,19 +32,19 @@ function FormularioEdicion() {
     }, [id, obtenerProducto])
 
     const validarFormulario = () => {
-        if (!formData.nombre || !formData.nombre.trim()) {
+        if (!producto.nombre || !producto.nombre.trim()) {
             return "El nombre es obligatorio."
         }
-        if (!formData.categoria) {
+        if (!producto.categoria) {
             return "Debes seleccionar una categoría."
         }
-        if (!formData.precio || isNaN(Number(formData.precio)) || Number(formData.precio) <= 0) {
+        if (!producto.precio || isNaN(Number(producto.precio)) || Number(producto.precio) <= 0) {
             return "El precio debe ser un número mayor a 0."
         }
-        if (!formData.descripcion || formData.descripcion.trim().length < 10) {
+        if (!producto.descripcion || producto.descripcion.trim().length < 10) {
             return "La descripción debe tener al menos 10 caracteres."
         }
-        if (!formData.imagen || !formData.imagen.trim()) {
+        if (!producto.imagen || !producto.imagen.trim()) {
             return "La URL de la imagen no debe estar vacía."
         }
         return true
@@ -56,11 +52,11 @@ function FormularioEdicion() {
 
     const handleChange = (e) => {
         const { name, value } = e.target
-        setFormData({ ...formData, [name]: value })
+        setProducto({ ...producto, [name]: value })
     }
 
     const handleCategorySelect = (eventKey) => {
-        setFormData({ ...formData, categoria: eventKey })
+        setProducto({ ...producto, categoria: eventKey })
     }
 
     const handleSubmit = async (e) => {
@@ -71,23 +67,17 @@ function FormularioEdicion() {
             return
         }
 
-        const { id: productoId, ...datosParaActualizar } = formData
-        datosParaActualizar.precio = Number(datosParaActualizar.precio)
+        const { id: productoId, ...datosParaActualizar } = producto
 
         try {
-            const respuesta = await actualizarProducto(productoId, datosParaActualizar)
-            if (respuesta?.simulated) {
-                toast.info(`(Dry-Run) ${respuesta.message}`)
-            } else {
-                toast.success("Artículo actualizado con éxito")
-            }
-            navigate("/admin/productos")
+            await actualizarProducto(productoId, datosParaActualizar)
+            toast.success("Artículo actualizado con éxito")
+            navigate(`/productos/${productoId}`)
         } catch (err) {
             console.error("Error al actualizar:", err)
             toast.error(`Error: ${err.message || "Hubo un problema al actualizar el artículo"}`)
         }
     }
-
     if (!admin) {
         return <Navigate to="/" replace />
     }
@@ -110,7 +100,7 @@ function FormularioEdicion() {
         )
     }
 
-    if (!formData && !cargando) {
+    if (!producto?.id && !cargando) {
         return (
             <Container className="d-flex justify-content-center align-items-center vh-100">
                 <Card className="p-4 shadow-lg form-edit-card">
@@ -135,7 +125,7 @@ function FormularioEdicion() {
                             className="form-edit-input"
                             type="text"
                             name="nombre"
-                            value={formData.nombre || ""}
+                            value={producto.nombre || ""}
                             onChange={handleChange}
                             placeholder="Nombre del producto"
                             required
@@ -147,9 +137,8 @@ function FormularioEdicion() {
                             <Dropdown.Toggle
                                 className="dropdown-edit-toggle w-100"
                                 variant="secondary"
-                                id="dropdown-categoria-edicion"
-                            >
-                                {formData.categoria || "Selecciona una categoría"}
+                                id="dropdown-categoria-edicion">
+                                {producto.categoria || "Selecciona una categoría"}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu className="dropdown-edit-menu">
@@ -170,7 +159,7 @@ function FormularioEdicion() {
                             className="form-edit-input"
                             type="text"
                             name="imagen"
-                            value={formData.imagen || ""}
+                            value={producto.imagen || ""}
                             onChange={handleChange}
                             placeholder="URL de la imagen"
                             required
@@ -183,7 +172,7 @@ function FormularioEdicion() {
                             className="form-edit-input"
                             type="number"
                             name="precio"
-                            value={formData.precio || ""}
+                            value={producto.precio || ""}
                             onChange={handleChange}
                             required
                             min="0"
@@ -197,7 +186,7 @@ function FormularioEdicion() {
                             className="form-edit-input"
                             as="textarea"
                             name="descripcion"
-                            value={formData.descripcion || ""}
+                            value={producto.descripcion || ""}
                             onChange={handleChange}
                             required
                             rows={3}
@@ -206,7 +195,7 @@ function FormularioEdicion() {
                     </Form.Group>
 
                     <Button variant="primary" type="submit" className="w-100 mt-3">
-                        Actualizar Producto
+                        Actualizar dB
                     </Button>
                 </Form>
             </Card>

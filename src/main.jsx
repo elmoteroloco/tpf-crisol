@@ -10,14 +10,14 @@ import "animate.css"
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>
-        <CarritoProvider>
-            <AuthProvider>
-                <ProductosProvider>
-                    <ModalProvider>
+        <ModalProvider>
+            <ProductosProvider>
+                <CarritoProvider>
+                    <AuthProvider>
                         <App />
-                    </ModalProvider>
-                </ProductosProvider>
-            </AuthProvider>
-        </CarritoProvider>
-    </StrictMode>,
+                    </AuthProvider>
+                </CarritoProvider>
+            </ProductosProvider>
+        </ModalProvider>
+    </StrictMode>
 )
